@@ -1,0 +1,18 @@
+main: com.oreonk.TestPlug
+name: PrisonTest
+version: 1
+depend: [Vault, PlaceholderAPI]
+api-version: 1.16
+permissions:
+  prison.autosell:
+    description: Перм для возможности переключения автоселла.
+  prison.autosell.on:
+    description: Включить автоселл
+  prison.autosell.off:
+    description: Отключить автоселл
+  prison.privateboost:
+    description: Проверка на наличие приватного бустера (выдаётся при первой покупке и НЕ удаляется)
+  prison.privateboost.0,1:
+    description: Цифра, прибавляющаяся к бустеру (ОБЯЗАТЕЛЬНО С ЗАПЯТОЙ) вплоть до 1,9
+  prison.globalboost:
+    description: Глобальный бустер (+ 0.5 к множителю). Перм временно выдавать в дефолт группу (юзер)
