@@ -1,11 +1,12 @@
 #Во вкладке Upgrade важно соблюдать порядок ввода данных. 1 - первая эффективность, 6 - переход предмета на некст тир.
 DB:
-  host: localhost
+  host: 127.0.0.1
   port: 3306
-  database: minecraft
+  database: oreonk_test
+  ssl: false #Использование SSL для БД
   username: oreonk
-  password: 123
-  table: lvl
+  password: G1B6WM1kGMFV!
+  table: prison
 Upgrade:
   WOODEN_PICKAXE:
     1:
@@ -174,3 +175,9 @@ Lvl:
   3:
     - 1000
     - 175
+  4:
+    - 1
+    - 1
+  5:
+    - 1
+    - 1
