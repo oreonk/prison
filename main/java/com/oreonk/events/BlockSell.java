@@ -4,7 +4,6 @@ import com.oreonk.Msg;
 import com.oreonk.TestPlug;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -15,13 +14,11 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.plugin.Plugin;
 
 public class BlockSell implements Listener {
-    Plugin plugin = TestPlug.getPlugin(TestPlug.class);
     @EventHandler(priority = EventPriority.NORMAL)
     public void onInteraction(PlayerInteractEvent event) {
-            int count = plugin.getConfig().getConfigurationSection("blocks").getKeys(false).size();
+            int count = TestPlug.getPlugin(TestPlug.class).getBlocksConfig().getConfigurationSection("blocks").getKeys(false).size();
             if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 Block block = event.getClickedBlock();
                 if (block.getType() == Material.OAK_WALL_SIGN) {
@@ -38,8 +35,8 @@ public class BlockSell implements Listener {
                     PlayerInventory inventory = player.getInventory();
                     for (int c = 1; c <= count; c++) {
                         String blockNumber = String.valueOf(c);
-                        String name = plugin.getConfig().getConfigurationSection("blocks").getStringList(blockNumber).get(0);
-                        String pr = plugin.getConfig().getConfigurationSection("blocks").getStringList(blockNumber).get(1);
+                        String name = TestPlug.getPlugin(TestPlug.class).getBlocksConfig().getConfigurationSection("blocks").getStringList(blockNumber).get(0);
+                        String pr = TestPlug.getPlugin(TestPlug.class).getBlocksConfig().getConfigurationSection("blocks").getStringList(blockNumber).get(1);
                         Integer price = Integer.valueOf(pr);
                         amount = 0;
                         for (ItemStack stack : inventory.all(Material.valueOf(name)).values()) {

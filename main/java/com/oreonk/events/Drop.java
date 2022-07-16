@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Drop implements Listener {
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void itemDrop(PlayerDeathEvent event){
         event.setKeepInventory(true);
         Player player = event.getEntity();

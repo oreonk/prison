@@ -4,11 +4,16 @@ import com.oreonk.commands.*;
 import com.oreonk.events.*;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import net.milkbowl.vault.economy.Economy;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +23,10 @@ import java.util.UUID;
 public class TestPlug extends JavaPlugin {
     public  MySQL SQL;
     public  DatabaseCommand data;
+    private File blocksConfigFile;
+    private FileConfiguration blocksConfig;
+    private File lvlConfigFile;
+    private FileConfiguration lvlConfig;
     private static TestPlug instance;
     private static Economy econ = null;
     private static Permission perms = null;
@@ -29,11 +38,12 @@ public class TestPlug extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        createBlocksConfig();
+        createLvlConfig();
         if (this.getConfig().getConfigurationSection("data") != null) {
             getBooster();
         }
         System.out.println("Prison by oreonk kekw");
-        saveDefaultConfig();
         setupPermissions();
         this.SQL = new MySQL();
         this.data = new DatabaseCommand(this);
@@ -48,11 +58,12 @@ public class TestPlug extends JavaPlugin {
         }
         getServer().getPluginManager().registerEvents(new DBJoin(), this);
         getServer().getPluginManager().registerEvents(new BlockBreak(), this);
-        new Upgrade(this);
         getServer().getPluginManager().registerEvents(new BlockSell(), this);
         getServer().getPluginManager().registerEvents(new ClickEvent(), this);
         getServer().getPluginManager().registerEvents(new Enchant(), this);
+        getServer().getPluginManager().registerEvents(new CraftCancel(), this);
         this.getCommand("lvl").setExecutor(new Lvl());
+        this.getCommand("upgrade").setExecutor(new Upgrade());
         this.getCommand("shop").setExecutor(new Donate());
         this.getCommand("thx").setExecutor(new Thx());
         this.getCommand("autosell").setExecutor(new AutoSell());
@@ -63,6 +74,7 @@ public class TestPlug extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+        saveDefaultConfig();
     }
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
@@ -112,6 +124,41 @@ public class TestPlug extends JavaPlugin {
             Integer time = Integer.parseInt(this.getConfig().getConfigurationSection("data").getKeys(false).toString());
             this.booster.put(player, time);
             this.getConfig().set("data", null);
+        }
+    }
+    public FileConfiguration getBlocksConfig(){
+        return this.blocksConfig;
+    }
+
+    private void createBlocksConfig(){
+        blocksConfigFile = new File(getDataFolder(), "blocks.yml");
+        if (!blocksConfigFile.exists()){
+            blocksConfigFile.getParentFile().mkdirs();
+            saveResource("blocks.yml", false);
+        }
+        blocksConfig = new YamlConfiguration();
+        try {
+            blocksConfig.load(blocksConfigFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public FileConfiguration getLvlConfig(){
+        return this.lvlConfig;
+    }
+
+    private void createLvlConfig() {
+        lvlConfigFile = new File(getDataFolder(), "lvl.yml");
+        if (!lvlConfigFile.exists()){
+            lvlConfigFile.getParentFile().mkdirs();
+            saveResource("lvl.yml", false);
+        }
+        lvlConfig = new YamlConfiguration();
+        try {
+            lvlConfig.load(lvlConfigFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
         }
     }
 }

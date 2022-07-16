@@ -3,8 +3,6 @@ package com.oreonk.events;
 import com.oreonk.Msg;
 import com.oreonk.TestPlug;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -12,7 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
@@ -23,7 +20,7 @@ public class BlockBreak implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void blockBreak(BlockBreakEvent event){
         Player player = event.getPlayer();
-        ItemStack pickaxe = new ItemStack(Material.DIAMOND_PICKAXE);
+        ItemStack pickaxe = player.getInventory().getItemInMainHand();
         Collection<ItemStack> drops = event.getBlock().getDrops(pickaxe);
         if (!player.hasPermission("prison.autosell.on")) {
             for (ItemStack stack : drops) {
@@ -36,7 +33,7 @@ public class BlockBreak implements Listener {
             }
             Double multiplier = TestPlug.getPlugin(TestPlug.class).mltp.get(player);
             Double boost = TestPlug.getPlugin(TestPlug.class).bst.get(player);
-            FileConfiguration config = TestPlug.getPlugin(TestPlug.class).getConfig();
+            FileConfiguration config = TestPlug.getPlugin(TestPlug.class).getBlocksConfig();
             int size = config.getConfigurationSection("blocks").getKeys(false).size();
             String type = event.getBlock().getType().toString();
             for(int i = 1; i <= size; i++){

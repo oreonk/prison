@@ -2,7 +2,6 @@ package com.oreonk.events;
 
 import com.oreonk.Msg;
 import com.oreonk.TestPlug;
-import me.davidml16.acubelets.api.CubeletsAPI;
 import me.xanium.gemseconomy.api.GemsEconomyAPI;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -13,7 +12,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -151,12 +149,12 @@ public class DonateMenus implements Listener {
                     if (boost>2.0){
                         Msg.send(player, "&4У вас уже максимально возможный бустер!");
                     } else{
-                        Double balance = economy.getBalance(player.getUniqueId(), economy.getCurrency("honey"));
+                        double balance = economy.getBalance(player.getUniqueId(), economy.getCurrency("honey"));
                         if (balance>=price) {
                             economy.withdraw(player.getUniqueId(), price,economy.getCurrency("honey"));
                             TestPlug.getPlugin(TestPlug.class).bst.remove(player);
                             TestPlug.getPlugin(TestPlug.class).bst.put(player, boost+0.1);
-                            TestPlug.getPlugin(TestPlug.class).getDatabase().updateBoost(player, TestPlug.getPlugin(TestPlug.class).bst.get(player).toString());
+                            TestPlug.getPlugin(TestPlug.class).getDatabase().updateBoost(player, String.valueOf(boost+0.1));
                             Msg.send(player, "&aПокупка успешна!");
                             player.closeInventory();
                         } else {

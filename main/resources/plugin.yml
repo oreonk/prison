@@ -25,3 +25,6 @@ commands:
   lvl:
     description: "Повышение уровня"
     usage: /lvl
+  upgrade:
+    description: "Улучшение вещей"
+    usage: /upgrade

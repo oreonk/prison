@@ -1,0 +1,214 @@
+blocks:
+  1:
+    - "DIRT"
+    - 1
+  2:
+    - "STONE"
+    - 4
+  3:
+    - "COBBLESTONE"
+    - 3
+  4:
+    - "REDSTONE_ORE"
+    - 7
+  5:
+    - "REDSTONE"
+    - 1
+  6:
+    - "COAL_ORE"
+    - 5
+  7:
+    - "COAL"
+    - 3
+  8:
+    - "IRON_ORE"
+    - 6
+  9:
+    - "RAW_IRON"
+    - 4
+  10:
+    - "GOLD_ORE"
+    - 8
+  11:
+    - "RAW_GOLD"
+    - 6
+  12:
+    - "EMERALD_ORE"
+    - 16
+  13:
+    - "EMERALD"
+    - 12
+  14:
+    - "LAPIS_LAZULI"
+    - 2
+  15:
+    - "LAPIS_ORE"
+    - 10
+  16:
+    - "DIAMOND_ORE"
+    - 20
+  17:
+    - "DIAMOND"
+    - 18
+  18:
+    - "COAL_BLOCK"
+    - 15
+  19:
+    - "STONE_BRICKS"
+    - 6
+  20:
+    - "MOSSY_STONE_BRICKS"
+    - 8
+  21:
+    - "CRACKED_STONE_BRICKS"
+    - 10
+  22:
+    - "CHISELED_STONE_BRICKS"
+    - 11
+  23:
+    - "BRICKS"
+    - 13
+  24:
+    - "NETHERRACK"
+    - 2
+  25:
+    - "NETHER_BRICKS"
+    - 10
+  26:
+    - "DIORITE"
+    - 11
+  27:
+    - "NETHER_WART_BLOCK"
+    - 15
+  28:
+    - "RED_NETHER_BRICKS"
+    - 14
+  29:
+    - "QUARTZ"
+    - 10
+  30:
+    - "NETHER_QUARTZ_ORE"
+    - 14
+  31:
+    - "RED_CONCRETE"
+    - 16
+  32:
+    - "CYAN_CONCRETE"
+    - 16
+  33:
+    - "PURPLE_CONCRETE"
+    - 16
+  34:
+    - "BLUE_CONCRETE"
+    - 16
+  35:
+    - "PINK_CONCRETE"
+    - 16
+  36:
+    - "GRAY_CONCRETE"
+    - 16
+  37:
+    - "LIGHT_GRAY_CONCRETE"
+    - 16
+  38:
+    - "BLACK_CONCRETE"
+    - 16
+  39:
+    - "GREEN_CONCRETE"
+    - 16
+  40:
+    - "BROWN_CONCRETE"
+    - 16
+  41:
+    - "LIME_CONCRETE"
+    - 16
+  42:
+    - "YELLOW_CONCRETE"
+    - 16
+  43:
+    - "LIGHT_BLUE_CONCRETE"
+    - 16
+  44:
+    - "ORANGE_CONCRETE"
+    - 16
+  45:
+    - "WHITE_CONCRETE"
+    - 16
+  46:
+    - "IRON_BLOCK"
+    - 25
+  47:
+    - "SANDSTONE"
+    - 10
+  48:
+    - "CHISELED_SANDSTONE"
+    - 14
+  49:
+    - "CUT_SANDSTONE"
+    - 15
+  50:
+    - "RED_SANDSTONE"
+    - 20
+  51:
+    - "WHITE_WOOL"
+    - 30
+  52:
+    - "ORANGE_WOOL"
+    - 35
+  53:
+    - "GRAY_WOOL"
+    - 32
+  54:
+    - "COBWEB"
+    - 34
+  55:
+    - "END_STONE"
+    - 40
+  56:
+    - "END_STONE_BRICKS"
+    - 50
+  57:
+    - "PURPUR_BLOCK"
+    - 55
+  58:
+    - "PURPUR_PILLAR"
+    - 60
+  59:
+    - "PRISMARINE"
+    - 60
+  60:
+    - "PRISMARINE_BRICKS"
+    - 65
+  61:
+    - "DARK_PRISMARINE"
+    - 69
+  62:
+    - "SEA_LANTERN"
+    - 80
+  63:
+    - "OBSIDIAN"
+    - 150
+  64:
+    - "GOLD_BLOCK"
+    - 40
+  65:
+    - "LAPIS_BLOCK"
+    - 38
+  66:
+    - "EMERALD_BLOCK"
+    - 60
+  67:
+    - "DIAMOND_BLOCK"
+    - 55
+  68:
+    - "REDSTONE_BLOCK"
+    - 35
+  69:
+    - "SAND"
+    - 2
+  70:
+    - "GRAVEL"
+    - 2
+  71:
+    - "FLINT"
+    - 4
