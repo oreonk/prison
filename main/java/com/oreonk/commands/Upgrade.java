@@ -2,7 +2,7 @@ package com.oreonk.commands;
 
 
 import com.oreonk.Msg;
-import com.oreonk.TestPlug;
+import com.oreonk.Prison;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -25,7 +25,7 @@ public class Upgrade implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] arguments) {
         if (sender instanceof Player) {
-            Plugin plugin = TestPlug.getInstance();
+            Plugin plugin = Prison.getInstance();
             Player player = (Player) sender;
             ItemStack item = player.getInventory().getItemInMainHand();
             String material = player.getInventory().getItemInMainHand().getType().toString();
@@ -33,11 +33,11 @@ public class Upgrade implements CommandExecutor {
             ItemStack firstItem = item.clone();
             if (item.getType() != Material.AIR) {
                 if (item.getItemMeta().isUnbreakable()) {
-                    Economy economy = TestPlug.getEconomy();
-                    Inventory gui = Bukkit.createInventory(player, 27, "Апгрейд");
+                    Economy economy = Prison.getEconomy();
+                    Inventory gui = Bukkit.createInventory(player, 27, "Улучшение предмета");
                     ItemStack confirm = new ItemStack(Material.GREEN_WOOL);
                     ItemStack cancel = new ItemStack(Material.RED_WOOL);
-                    ItemStack stat = new ItemStack(Material.COBBLESTONE);
+                    ItemStack stat = new ItemStack(Material.ANVIL);
 
                     ItemMeta confirm_meta = confirm.getItemMeta();
                     confirm_meta.setDisplayName(ChatColor.GREEN + "Апгрейд");
@@ -99,40 +99,81 @@ public class Upgrade implements CommandExecutor {
                     if (upgrade.contains(material)) {
                         int eff = firstItem.getEnchantmentLevel(Enchantment.DIG_SPEED);
                             if (mat.equals(Material.DIAMOND_PICKAXE) | mat.equals(Material.DIAMOND_SHOVEL) | mat.equals(Material.DIAMOND_AXE)) {
-                                if (eff == 5) {
-                                    if (mat.equals(Material.DIAMOND_PICKAXE)) {
-                                        secondItem_meta.addEnchant(Enchantment.DIG_SPEED, 5, false);
-                                        ArrayList<String> secondItem_lore = new ArrayList<>();
-                                        secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
-                                        secondItem_meta.setLore(secondItem_lore);
-                                        secondItem_meta.setUnbreakable(true);
-                                        secondItem.setItemMeta(secondItem_meta);
-                                    } else if (mat.equals(Material.DIAMOND_SHOVEL)) {
-                                        secondItem_meta.addEnchant(Enchantment.DIG_SPEED, 5, false);
-                                        ArrayList<String> secondItem_lore = new ArrayList<>();
-                                        secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
-                                        secondItem_meta.setLore(secondItem_lore);
-                                        secondItem_meta.setUnbreakable(true);
-                                        secondItem.setItemMeta(secondItem_meta);
-                                    } else if (mat.equals(Material.DIAMOND_AXE)) {
-                                        secondItem_meta.addEnchant(Enchantment.DIG_SPEED, 5, false);
-                                        ArrayList<String> secondItem_lore = new ArrayList<>();
-                                        secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
-                                        secondItem_meta.setLore(secondItem_lore);
-                                        secondItem_meta.setUnbreakable(true);
-                                        secondItem.setItemMeta(secondItem_meta);
+                                if (item.getItemMeta().getDisplayName().contains("Героическая")) {
+                                    if (eff == 5) {
+                                        if (mat.equals(Material.DIAMOND_PICKAXE)) {
+                                            secondItem_meta.addEnchant(Enchantment.DIG_SPEED, 5, false);
+                                            ArrayList<String> secondItem_lore = new ArrayList<>();
+                                            secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
+                                            secondItem_meta.setLore(secondItem_lore);
+                                            secondItem_meta.setUnbreakable(true);
+                                            secondItem.setItemMeta(secondItem_meta);
+                                        } else if (mat.equals(Material.DIAMOND_SHOVEL)) {
+                                            secondItem_meta.addEnchant(Enchantment.DIG_SPEED, 5, false);
+                                            ArrayList<String> secondItem_lore = new ArrayList<>();
+                                            secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
+                                            secondItem_meta.setLore(secondItem_lore);
+                                            secondItem_meta.setUnbreakable(true);
+                                            secondItem.setItemMeta(secondItem_meta);
+                                        } else if (mat.equals(Material.DIAMOND_AXE)) {
+                                            secondItem_meta.addEnchant(Enchantment.DIG_SPEED, 5, false);
+                                            ArrayList<String> secondItem_lore = new ArrayList<>();
+                                            secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
+                                            secondItem_meta.setLore(secondItem_lore);
+                                            secondItem_meta.setUnbreakable(true);
+                                            secondItem.setItemMeta(secondItem_meta);
+                                        }
                                     }
-                                }
-                                else if (eff >= 1){
-                                    secondItem_meta.setUnbreakable(true);
-                                    secondItem.setItemMeta(secondItem_meta);
-                                    secondItem.addEnchantments(player.getInventory().getItemInMainHand().getEnchantments());
-                                    secondItem.addEnchantment(Enchantment.DIG_SPEED, eff+1);
-                                } else if (eff == 0){
-                                    secondItem_meta.setUnbreakable(true);
-                                    secondItem.setItemMeta(secondItem_meta);
-                                    secondItem.addUnsafeEnchantments(firstItem.getEnchantments());
-                                    secondItem.addEnchantment(Enchantment.DIG_SPEED, 1);
+                                } else if(item.getItemMeta().getDisplayName().contains("Редкая")){
+                                    if (eff == 4) {
+                                        if (mat.equals(Material.DIAMOND_PICKAXE)) {
+                                            secondItem_meta.addEnchant(Enchantment.DIG_SPEED, 4, false);
+                                            ArrayList<String> secondItem_lore = new ArrayList<>();
+                                            secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
+                                            secondItem_meta.setLore(secondItem_lore);
+                                            secondItem_meta.setUnbreakable(true);
+                                            secondItem.setItemMeta(secondItem_meta);
+                                        } else if (mat.equals(Material.DIAMOND_SHOVEL)) {
+                                            secondItem_meta.addEnchant(Enchantment.DIG_SPEED, 4, false);
+                                            ArrayList<String> secondItem_lore = new ArrayList<>();
+                                            secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
+                                            secondItem_meta.setLore(secondItem_lore);
+                                            secondItem_meta.setUnbreakable(true);
+                                            secondItem.setItemMeta(secondItem_meta);
+                                        } else if (mat.equals(Material.DIAMOND_AXE)) {
+                                            secondItem_meta.addEnchant(Enchantment.DIG_SPEED, 4, false);
+                                            ArrayList<String> secondItem_lore = new ArrayList<>();
+                                            secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
+                                            secondItem_meta.setLore(secondItem_lore);
+                                            secondItem_meta.setUnbreakable(true);
+                                            secondItem.setItemMeta(secondItem_meta);
+                                        }
+                                    }
+                                } else {
+                                    if (eff == 3 && !item.getItemMeta().getDisplayName().contains("Редкая") && !item.getItemMeta().getDisplayName().contains("Героическая")) {
+                                        if (mat.equals(Material.DIAMOND_PICKAXE)) {
+                                            secondItem_meta.addEnchant(Enchantment.DIG_SPEED, 3, false);
+                                            ArrayList<String> secondItem_lore = new ArrayList<>();
+                                            secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
+                                            secondItem_meta.setLore(secondItem_lore);
+                                            secondItem_meta.setUnbreakable(true);
+                                            secondItem.setItemMeta(secondItem_meta);
+                                        } else if (mat.equals(Material.DIAMOND_SHOVEL)) {
+                                            secondItem_meta.addEnchant(Enchantment.DIG_SPEED, 3, false);
+                                            ArrayList<String> secondItem_lore = new ArrayList<>();
+                                            secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
+                                            secondItem_meta.setLore(secondItem_lore);
+                                            secondItem_meta.setUnbreakable(true);
+                                            secondItem.setItemMeta(secondItem_meta);
+                                        } else if (mat.equals(Material.DIAMOND_AXE)) {
+                                            secondItem_meta.addEnchant(Enchantment.DIG_SPEED, 3, false);
+                                            ArrayList<String> secondItem_lore = new ArrayList<>();
+                                            secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
+                                            secondItem_meta.setLore(secondItem_lore);
+                                            secondItem_meta.setUnbreakable(true);
+                                            secondItem.setItemMeta(secondItem_meta);
+                                        }
+                                    }
                                 }
                             } else {
                                 int number = 0;
@@ -144,22 +185,57 @@ public class Upgrade implements CommandExecutor {
                                         break;
                                     }
                                 }
-                                if (eff == 5) {
+                                if (eff == 5 && item.getItemMeta().getDisplayName().contains("Героическая")) {
                                     //Переход на тир
                                     secondItem.setType(Material.valueOf(upgrade.get(number)));
                                     secondItem_meta.setUnbreakable(true);
                                     secondItem.setItemMeta(secondItem_meta);
                                     secondItem.addEnchantments(player.getInventory().getItemInMainHand().getEnchantments());
                                     secondItem.removeEnchantment(Enchantment.DIG_SPEED);
-                                } else if (eff >= 1) {
+                                } else if (eff == 4 && item.getItemMeta().getDisplayName().contains("Редкая")){
+                                    secondItem.setType(Material.valueOf(upgrade.get(number)));
+                                    secondItem_meta.setUnbreakable(true);
+                                    secondItem_meta.setDisplayName("Редкая кирка");
+                                    secondItem.setItemMeta(secondItem_meta);
+                                    secondItem.addEnchantments(player.getInventory().getItemInMainHand().getEnchantments());
+                                    secondItem.removeEnchantment(Enchantment.DIG_SPEED);
+                                } else if(!item.getItemMeta().getDisplayName().contains("Редкая") && !item.getItemMeta().getDisplayName().contains("Героическая")){
+                                    if (eff == 3) {
+                                        secondItem.setType(Material.valueOf(upgrade.get(number)));
+                                        secondItem_meta.setUnbreakable(true);
+                                        secondItem.setItemMeta(secondItem_meta);
+                                        secondItem.addEnchantments(player.getInventory().getItemInMainHand().getEnchantments());
+                                        secondItem.removeEnchantment(Enchantment.DIG_SPEED);
+                                    }
+                                }
+                                if (eff >=1 && eff < 5 && item.getItemMeta().getDisplayName().contains("Героическая")){
+                                    secondItem_meta.setUnbreakable(true);
+                                    secondItem_meta.setDisplayName("Героическая кирка");
+                                    secondItem.setItemMeta(secondItem_meta);
+                                    secondItem.addEnchantments(player.getInventory().getItemInMainHand().getEnchantments());
+                                    secondItem.addEnchantment(Enchantment.DIG_SPEED, eff+1);
+                                } else if (eff >=1 && eff < 4 && item.getItemMeta().getDisplayName().contains("Редкая")){
+                                    secondItem_meta.setUnbreakable(true);
+                                    secondItem_meta.setDisplayName("Редкая кирка");
+                                    secondItem.setItemMeta(secondItem_meta);
+                                    secondItem.addEnchantments(player.getInventory().getItemInMainHand().getEnchantments());
+                                    secondItem.addEnchantment(Enchantment.DIG_SPEED, eff+1);
+                                }
+                                    else if (eff >= 1 && eff < 3) {
                                     //Эффективность после 1
                                     secondItem_meta.setUnbreakable(true);
+                                    if (firstItem_meta.getDisplayName() != null && (firstItem_meta.getDisplayName().contains("Героическая") || firstItem_meta.getDisplayName().contains("Редкая"))){
+                                        secondItem_meta.setDisplayName(firstItem_meta.getDisplayName());
+                                    }
                                     secondItem.setItemMeta(secondItem_meta);
                                     secondItem.addEnchantments(player.getInventory().getItemInMainHand().getEnchantments());
                                     secondItem.addEnchantment(Enchantment.DIG_SPEED, eff+1);
                                 } else if (eff == 0){
                                     //Эффективность 1
                                     secondItem_meta.setUnbreakable(true);
+                                    if (firstItem_meta.getDisplayName() != null && (firstItem_meta.getDisplayName().contains("Героическая") || firstItem_meta.getDisplayName().contains("Редкая"))){
+                                        secondItem_meta.setDisplayName(firstItem_meta.getDisplayName());
+                                    }
                                     secondItem.setItemMeta(secondItem_meta);
                                     secondItem.addUnsafeEnchantments(firstItem.getEnchantments());
                                     secondItem.addEnchantment(Enchantment.DIG_SPEED, 1);
@@ -168,30 +244,30 @@ public class Upgrade implements CommandExecutor {
                     } else if (upgradeArmor.contains(material)) {
                         int prot = firstItem.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL);
                         if (mat.equals(Material.DIAMOND_HELMET) || mat.equals(Material.DIAMOND_CHESTPLATE) || mat.equals(Material.DIAMOND_LEGGINGS) || mat.equals(Material.DIAMOND_BOOTS)) {
-                            if (prot == 5) {
+                            if (prot == 4) {
                                 if (mat.equals(Material.DIAMOND_HELMET)) {
-                                    secondItem_meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5, true);
+                                    secondItem_meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4, true);
                                     ArrayList<String> secondItem_lore = new ArrayList<>();
                                     secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
                                     secondItem_meta.setLore(secondItem_lore);
                                     secondItem_meta.setUnbreakable(true);
                                     secondItem.setItemMeta(secondItem_meta);
                                 } else if (mat.equals(Material.DIAMOND_CHESTPLATE)) {
-                                    secondItem_meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5, true);
+                                    secondItem_meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4, true);
                                     ArrayList<String> secondItem_lore = new ArrayList<>();
                                     secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
                                     secondItem_meta.setLore(secondItem_lore);
                                     secondItem_meta.setUnbreakable(true);
                                     secondItem.setItemMeta(secondItem_meta);
                                 } else if (mat.equals(Material.DIAMOND_LEGGINGS)) {
-                                    secondItem_meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5, true);
+                                    secondItem_meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4, true);
                                     ArrayList<String> secondItem_lore = new ArrayList<>();
                                     secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
                                     secondItem_meta.setLore(secondItem_lore);
                                     secondItem_meta.setUnbreakable(true);
                                     secondItem.setItemMeta(secondItem_meta);
                                 } else if (mat.equals(Material.DIAMOND_BOOTS)) {
-                                    secondItem_meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5, true);
+                                    secondItem_meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4, true);
                                     ArrayList<String> secondItem_lore = new ArrayList<>();
                                     secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
                                     secondItem_meta.setLore(secondItem_lore);
@@ -203,13 +279,13 @@ public class Upgrade implements CommandExecutor {
                             int number = 0;
                             int count = upgradeArmor.size();
                             for (int c = 0; c < count; c++) {
-                                String sword = upgradeArmor.get(c);
-                                if (material.equals(sword)) {
+                                String armor = upgradeArmor.get(c);
+                                if (material.equals(armor)) {
                                     number = c + 1;
                                     break;
                                 }
                             }
-                            if (prot == 5) {
+                            if (prot == 4) {
                                 String finalName = upgradeArmor.get(number);
                                 secondItem_meta.setUnbreakable(true);
                                 secondItem.setItemMeta(secondItem_meta);
@@ -268,7 +344,7 @@ public class Upgrade implements CommandExecutor {
                             }
                         }
                     }
-                    String st = PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block:DIRT,STONE,OBSIDIAN,GRANITE,DIORITE,ANDESITE,GOLD_BLOCK,IRON_BLOCK,DIAMOND_BLOCK,COAL_BLOCK,GRAVEL,SAND,NETHERRACK,OAK_LEAVES,BIRCH_LEAVES,SPRUCE_LEAVES,JUNGLE_LEAVES,DARK_OAK_LEAVES,OAK_LOG,BIRCH_LOG,SPRUCE_LOG,JUNGLE_LOG,DARK_OAK_LOG,GOLD_ORE,IRON_ORE,COAL_ORE,DIAMOND_ORE,REDSTONE_ORE,EMERALD_ORE,NETHER_QUARTZ_ORE,LAPIS_ORE,WHITE_CONCRETE,ORANGE_CONCRETE,MAGENTA_CONCRETE,LIGHT_BLUE_CONCRETE,YELLOW_CONCRETE,LIME_CONCRETE,PINK_CONCRETE,GRAY_CONCRETE,LIGHT_GRAY_CONCRETE,CYAN_CONCRETE,PURPLE_CONCRETE,BLUE_CONCRETE,BROWN_CONCRETE,GREEN_CONCRETE,RED_CONCRETE,BLACK_CONCRETE,PURPUR_BLOCK,PURPUR_PILLAR,END_STONE,END_STONE_BRICKS,%");
+                    String st = PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block:DIRT,STONE,OBSIDIAN,GRANITE,DIORITE,ANDESITE,GOLD_BLOCK,IRON_BLOCK,DIAMOND_BLOCK,COAL_BLOCK,GRAVEL,SAND,NETHERRACK,OAK_LEAVES,BIRCH_LEAVES,SPRUCE_LEAVES,JUNGLE_LEAVES,DARK_OAK_LEAVES,OAK_WOOD,BIRCH_LOG,SPRUCE_LOG,JUNGLE_LOG,DARK_OAK_WOOD,STRIPPED_JUNGLE_WOOD,STRIPPED_OAK_WOOD,STRIPPED_DARK_OAK_WOOD,STRIPPED_SPRUCE_WOOD,GOLD_ORE,IRON_ORE,COAL_ORE,DIAMOND_ORE,REDSTONE_ORE,EMERALD_ORE,NETHER_QUARTZ_ORE,LAPIS_ORE,WHITE_CONCRETE,ORANGE_CONCRETE,MAGENTA_CONCRETE,LIGHT_BLUE_CONCRETE,YELLOW_CONCRETE,LIME_CONCRETE,PINK_CONCRETE,GRAY_CONCRETE,LIGHT_GRAY_CONCRETE,CYAN_CONCRETE,PURPLE_CONCRETE,BLUE_CONCRETE,BROWN_CONCRETE,GREEN_CONCRETE,RED_CONCRETE,BLACK_CONCRETE,PURPUR_BLOCK,PURPUR_PILLAR,END_STONE,END_STONE_BRICKS,NETHER_BRICKS,RED_NETHER_BRICKS,NETHER_WART_BLOCK,STONE_BRICKS,MOSSY_STONE_BRICKS,CRACKED_STONE_BRICKS,CHISELED_STONE_BRICKS,BRICKS,SANDSTONE,CHISELED_SANDSTONE,CUT_SANDSTONE,RED_SANDSTONE,CYAN_GLAZED_TERRACOTTA,PRISMARINE,PRISMARINE_BRICKS,DARK_PRISMARINE,SEA_LANTERN,WHITE_WOOL,ORANGE_WOOL,GRAY_WOOL,COBWEB,ICE,BLUE_ICE,PACKED_ICE,PINK_GLAZED_TERRACOTTA,RED_GLAZED_TERRACOTTA,GRAY_GLAZED_TERRACOTTA,SNOWB_BLOCK,DEEPSLATE_BRICKS,POLISHED_BLACKSTONE_BRICKS,CRACKED_DEEPSLATE_BRICKS,BASALT,DEEPSLATE,COBBLED_DEEPSLATE,GLIDED_BLACKSTONE,CRYING_OBSIDIAN%");
                     int ebal = (int) economy.getBalance(player);
                     String bal = String.valueOf(ebal);
                     String materr = firstItem.getType().toString();
@@ -280,9 +356,9 @@ public class Upgrade implements CommandExecutor {
                         path = "Upgrade." + materr;
                     }
                     ArrayList<String> configs = (ArrayList<String>) config.getConfigurationSection(path).getStringList(String.valueOf(lvl));
-                    stat_lore.add(ChatColor.GRAY + bal + "/" + configs.get(0) + ChatColor.WHITE + " ");
                     int cfgLenght = configs.size();
                     if (firstItem.containsEnchantment(Enchantment.DIG_SPEED) || secondItem.containsEnchantment(Enchantment.DIG_SPEED)) {
+                        stat_lore.add(ChatColor.GRAY + bal + "/" + configs.get(1) + ChatColor.WHITE + " ");
                         stat_lore.add(ChatColor.GRAY + st + "/" + configs.get(0) + " Блоков");
                         for (int i = 2; i < cfgLenght; i = i + 3) {
                             String whatToEarn = configs.get(i);
@@ -291,6 +367,7 @@ public class Upgrade implements CommandExecutor {
                             stat_lore.add(ChatColor.GRAY + PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block:" + whatToEarn + "%") + "/" + howMuch + " " + earnName);
                         }
                     } else if (firstItem.containsEnchantment(Enchantment.DAMAGE_ALL) || secondItem.containsEnchantment(Enchantment.DAMAGE_ALL) || firstItem.containsEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL) || secondItem.containsEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL)) {
+                        stat_lore.add(ChatColor.GRAY + bal + "/" + configs.get(0) + ChatColor.WHITE + " ");
                         for (int i = 1; i < cfgLenght; i = i + 3) {
                             String whatToEarn = configs.get(i);
                             String howMuch = configs.get(i + 1);

@@ -1,6 +1,6 @@
 package com.oreonk.commands;
 
-import com.oreonk.TestPlug;
+import com.oreonk.Prison;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -21,12 +21,12 @@ public class Lvl implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] arguments) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            int level = TestPlug.getPlugin(TestPlug.class).lvl.get(player);
-            Economy economy = TestPlug.getEconomy();
+            int level = Prison.getPlugin(Prison.class).lvl.get(player);
+            Economy economy = Prison.getEconomy();
             Inventory gui = Bukkit.createInventory(player, 27, "Повышение уровня");
             ItemStack confirm = new ItemStack(Material.GREEN_CONCRETE);
             ItemStack cancel = new ItemStack(Material.RED_CONCRETE);
-            ItemStack stat = new ItemStack(Material.COBBLESTONE);
+            ItemStack stat = new ItemStack(Material.EXPERIENCE_BOTTLE);
 
             ItemMeta confirm_meta = confirm.getItemMeta();
             confirm_meta.setDisplayName(ChatColor.GREEN + "Повысить уровень");
@@ -39,12 +39,12 @@ public class Lvl implements CommandExecutor {
             ItemMeta stat_meta = stat.getItemMeta();
             ArrayList<String> stat_lore = new ArrayList<>();
             int balance = (int) economy.getBalance(player);
-            String st = PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block:DIRT,STONE,OBSIDIAN,GRANITE,DIORITE,ANDESITE,GOLD_BLOCK,IRON_BLOCK,DIAMOND_BLOCK,COAL_BLOCK,GRAVEL,SAND,NETHERRACK,OAK_LEAVES,BIRCH_LEAVES,SPRUCE_LEAVES,JUNGLE_LEAVES,DARK_OAK_LEAVES,OAK_LOG,BIRCH_LOG,SPRUCE_LOG,JUNGLE_LOG,DARK_OAK_LOG,GOLD_ORE,IRON_ORE,COAL_ORE,DIAMOND_ORE,REDSTONE_ORE,EMERALD_ORE,NETHER_QUARTZ_ORE,LAPIS_ORE,WHITE_CONCRETE,ORANGE_CONCRETE,MAGENTA_CONCRETE,LIGHT_BLUE_CONCRETE,YELLOW_CONCRETE,LIME_CONCRETE,PINK_CONCRETE,GRAY_CONCRETE,LIGHT_GRAY_CONCRETE,CYAN_CONCRETE,PURPLE_CONCRETE,BLUE_CONCRETE,BROWN_CONCRETE,GREEN_CONCRETE,RED_CONCRETE,BLACK_CONCRETE,PURPUR_BLOCK,PURPUR_PILLAR,END_STONE,END_STONE_BRICKS,NETHER_BRICKS,RED_NETHER_BRICKS,NETHER_WART_BLOCK,STONE_BRICKS,MOSSY_STONE_BRICKS,CRACKED_STONE_BRICKS,CHISELED_STONE_BRICKS,BRICKS,SANDSTONE,CHISELED_SANDSTONE,SANDSTONE,CUT_SANDSTONE,RED_SANDSTONE,PRISMARINE,PRISMARINE_BRICKS,DARK_PRISMARINE,SEA_LANTERN,WHITE_WOOL,ORANGE_WOOL,GRAY_WOOL,COBWEB,%");
-            int maxLevel = TestPlug.getPlugin(TestPlug.class).getLvlConfig().getConfigurationSection("Lvl").getKeys(true).size();
+            String st = PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block:DIRT,STONE,OBSIDIAN,GRANITE,DIORITE,ANDESITE,GOLD_BLOCK,IRON_BLOCK,DIAMOND_BLOCK,COAL_BLOCK,GRAVEL,SAND,NETHERRACK,OAK_LEAVES,BIRCH_LEAVES,SPRUCE_LEAVES,JUNGLE_LEAVES,DARK_OAK_LEAVES,OAK_WOOD,BIRCH_LOG,SPRUCE_LOG,JUNGLE_LOG,DARK_OAK_WOOD,STRIPPED_JUNGLE_WOOD,STRIPPED_OAK_WOOD,STRIPPED_DARK_OAK_WOOD,STRIPPED_SPRUCE_WOOD,GOLD_ORE,IRON_ORE,COAL_ORE,DIAMOND_ORE,REDSTONE_ORE,EMERALD_ORE,NETHER_QUARTZ_ORE,LAPIS_ORE,WHITE_CONCRETE,ORANGE_CONCRETE,MAGENTA_CONCRETE,LIGHT_BLUE_CONCRETE,YELLOW_CONCRETE,LIME_CONCRETE,PINK_CONCRETE,GRAY_CONCRETE,LIGHT_GRAY_CONCRETE,CYAN_CONCRETE,PURPLE_CONCRETE,BLUE_CONCRETE,BROWN_CONCRETE,GREEN_CONCRETE,RED_CONCRETE,BLACK_CONCRETE,PURPUR_BLOCK,PURPUR_PILLAR,END_STONE,END_STONE_BRICKS,NETHER_BRICKS,RED_NETHER_BRICKS,NETHER_WART_BLOCK,STONE_BRICKS,MOSSY_STONE_BRICKS,CRACKED_STONE_BRICKS,CHISELED_STONE_BRICKS,BRICKS,SANDSTONE,CHISELED_SANDSTONE,CUT_SANDSTONE,RED_SANDSTONE,CYAN_GLAZED_TERRACOTTA,PRISMARINE,PRISMARINE_BRICKS,DARK_PRISMARINE,SEA_LANTERN,WHITE_WOOL,ORANGE_WOOL,GRAY_WOOL,COBWEB,ICE,BLUE_ICE,PACKED_ICE,PINK_GLAZED_TERRACOTTA,RED_GLAZED_TERRACOTTA,GRAY_GLAZED_TERRACOTTA,SNOW_BLOCK,DEEPSLATE_BRICKS,POLISHED_BLACKSTONE_BRICKS,CRACKED_DEEPSLATE_BRICKS,BASALT,DEEPSLATE,COBBLED_DEEPSLATE,GLIDED_BLACKSTONE,CRYING_OBSIDIAN%");
+            int maxLevel = Prison.getPlugin(Prison.class).getLvlConfig().getConfigurationSection("Lvl").getKeys(true).size();
             if (level < maxLevel) {
                 int needLvl = level+1;
                 String key = String.valueOf(needLvl);
-                ArrayList<String> configs = (ArrayList<String>) TestPlug.getPlugin(TestPlug.class).getLvlConfig().getConfigurationSection("Lvl").getStringList(key);
+                ArrayList<String> configs = (ArrayList<String>) Prison.getPlugin(Prison.class).getLvlConfig().getConfigurationSection("Lvl").getStringList(key);
                 stat_meta.setDisplayName(ChatColor.YELLOW + "Повышение до " + key + " уровня");
                 stat_lore.add(ChatColor.GRAY + String.valueOf(balance) + " / " + configs.get(1) + ChatColor.WHITE + " ");
                 stat_lore.add(ChatColor.GRAY + st + " / " + configs.get(0) + " Блоков");

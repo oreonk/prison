@@ -1,11 +1,9 @@
 package com.oreonk.events;
 
 import com.oreonk.Msg;
-import com.oreonk.TestPlug;
+import com.oreonk.Prison;
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,29 +13,30 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import java.util.Map;
+
 public class BlockSell implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onInteraction(PlayerInteractEvent event) {
-            int count = TestPlug.getPlugin(TestPlug.class).getBlocksConfig().getConfigurationSection("blocks").getKeys(false).size();
-            if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                Block block = event.getClickedBlock();
-                if (block.getType() == Material.OAK_WALL_SIGN) {
-                    Economy economy = TestPlug.getEconomy();
+            if (event.getAction() == Action.LEFT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.OAK_WALL_SIGN) {
+                    Economy economy = Prison.getEconomy();
                     Player player = event.getPlayer();
                     double globalBoost = 0.0;
-                    if (!TestPlug.getPlugin(TestPlug.class).booster.isEmpty()){
+                    if (!Prison.getPlugin(Prison.class).booster.isEmpty()){
                         globalBoost = 1.0;
                     }
                     int amount;
                     int finalPrice = 0;
-                    Double multiplier = TestPlug.getPlugin(TestPlug.class).mltp.get(player);
-                    Double boost = TestPlug.getPlugin(TestPlug.class).bst.get(player);
+                    Double multiplier = Prison.getPlugin(Prison.class).mltp.get(player);
+                    Double boost = Prison.getPlugin(Prison.class).bst.get(player);
+                    int privateBoost = 0;
+                    if (Prison.getInstance().privateBooster.containsKey(player.getUniqueId())) {
+                        privateBoost = 1;
+                    }
                     PlayerInventory inventory = player.getInventory();
-                    for (int c = 1; c <= count; c++) {
-                        String blockNumber = String.valueOf(c);
-                        String name = TestPlug.getPlugin(TestPlug.class).getBlocksConfig().getConfigurationSection("blocks").getStringList(blockNumber).get(0);
-                        String pr = TestPlug.getPlugin(TestPlug.class).getBlocksConfig().getConfigurationSection("blocks").getStringList(blockNumber).get(1);
-                        Integer price = Integer.valueOf(pr);
+                    for (Map.Entry<String , Integer> entry : Prison.getPlugin(Prison.class).blocks.entrySet()){
+                        String name = entry.getKey();
+                        int price = entry.getValue();
                         amount = 0;
                         for (ItemStack stack : inventory.all(Material.valueOf(name)).values()) {
                             if (stack != null && stack.getType() == Material.valueOf(name)) {
@@ -45,16 +44,15 @@ public class BlockSell implements Listener {
                                 player.getInventory().remove(Material.valueOf(name));
                             }
                         }
-                        finalPrice = (int) (finalPrice + amount * price * (multiplier+boost+globalBoost));
+                        finalPrice = (int) (finalPrice + amount * price * (multiplier+boost+globalBoost+privateBoost));
                     }
                     if (finalPrice > 0) {
-                        EconomyResponse response = economy.depositPlayer(player, finalPrice);
-                        Double finalMultiplier = multiplier+boost+globalBoost;
+                        economy.depositPlayer(player, finalPrice);
+                        double finalMultiplier = multiplier+boost+globalBoost+privateBoost;
                         Msg.send(player, "&6" + finalPrice + " &f" + " &a Было зачислено на ваш счёт! Множитель x" + finalMultiplier);
                     } else {
                         Msg.send(player, "&4У вас нет ничего для продажи!");
                     }
-                }
             }
     }
 }

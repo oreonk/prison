@@ -18,7 +18,7 @@ public class Donate implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] arguments) {
         if (sender instanceof Player) {
-            if (command.getName().equalsIgnoreCase("shop")) {
+            if (command.getName().equalsIgnoreCase("shop") || command.getName().equalsIgnoreCase("donate")) {
                 Player player = (Player) sender;
                 Inventory gui = Bukkit.createInventory(player, 36, ChatColor.WHITE + ":offset_-16:");
 
@@ -30,7 +30,7 @@ public class Donate implements CommandExecutor {
                 booster_lore.add(ChatColor.GRAY + "Нажмите, для покупки приватного");
                 booster_lore.add(ChatColor.GRAY + "бустера (множителя при продаже");
                 booster_lore.add(ChatColor.GRAY + "блоков. 0.1 за покупку). Цена -");
-                booster_lore.add(ChatColor.GRAY + "150 " + ChatColor.WHITE + "");
+                booster_lore.add(ChatColor.GRAY + "150 " + ChatColor.WHITE + "");
                 booster_meta.setLore(booster_lore);
                 booster.setItemMeta(booster_meta);
 
@@ -41,7 +41,7 @@ public class Donate implements CommandExecutor {
                 autoSell_lore.add(ChatColor.GRAY + " ");
                 autoSell_lore.add(ChatColor.GRAY + "Нажмите, для покупки автоматической");
                 autoSell_lore.add(ChatColor.GRAY + "продажи выкопаных блоков. Цена -");
-                autoSell_lore.add(ChatColor.GRAY + "250 " + ChatColor.WHITE + "");
+                autoSell_lore.add(ChatColor.GRAY + "250 " + ChatColor.WHITE + "");
                 autoSell_meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                 autoSell_meta.setLore(autoSell_lore);
                 autoSell.setItemMeta(autoSell_meta);
@@ -58,9 +58,33 @@ public class Donate implements CommandExecutor {
                 boosters_meta.setLore(boosters_lore);
                 boosters.setItemMeta(boosters_meta);
 
+                ItemStack keys = new ItemStack(Material.TRIPWIRE_HOOK);
+                ItemMeta keys_meta = keys.getItemMeta();
+                keys_meta.setDisplayName(ChatColor.YELLOW + "Покупка ключей");
+                ArrayList<String> keys_lore = new ArrayList<>();
+                keys_lore.add(ChatColor.GRAY + " ");
+                keys_lore.add(ChatColor.GRAY + "Нажмите, для покупки ключей.");
+                keys_lore.add(ChatColor.RED + "В СЛЕДУЮЩЕМ МЕНЮ ПРЕДМЕТЫ ПОКУПАЮТСЯ");
+                keys_lore.add(ChatColor.RED + "ПО НАЖАТИЮ БЕЗ ПОДТВЕРЖДЕНИЯ");
+                keys_meta.setLore(keys_lore);
+                keys.setItemMeta(keys_meta);
+
+                ItemStack local = new ItemStack(Material.WRITABLE_BOOK);
+                ItemMeta local_meta = local.getItemMeta();
+                local_meta.setDisplayName(ChatColor.YELLOW + "Покупка локальных бустеров");
+                ArrayList<String> local_lore = new ArrayList<>();
+                local_lore.add(ChatColor.GRAY + " ");
+                local_lore.add(ChatColor.GRAY + "Нажмите, для покупки локальных бустеров.");
+                local_lore.add(ChatColor.RED + "В СЛЕДУЮЩЕМ МЕНЮ ПРЕДМЕТЫ ПОКУПАЮТСЯ");
+                local_lore.add(ChatColor.RED + "ПО НАЖАТИЮ БЕЗ ПОДТВЕРЖДЕНИЯ");
+                local_meta.setLore(local_lore);
+                local.setItemMeta(local_meta);
+
                 gui.setItem(1, booster);
                 gui.setItem(2, autoSell);
                 gui.setItem(3, boosters);
+                gui.setItem(4, keys);
+                gui.setItem(5, local);
 
 
                 player.openInventory(gui);

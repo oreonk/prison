@@ -1,7 +1,7 @@
-main: com.oreonk.TestPlug
+main: com.oreonk.Prison
 name: Prison
 version: 1
-depend: [Vault, PlaceholderAPI, GemsEconomy, LuckPerms]
+depend: [Vault, PlaceholderAPI]
 api-version: 1.17
 permissions:
   prison.autosell:
@@ -15,6 +15,7 @@ commands:
     description: "Открывает донат магазин"
     usage: /shop
     permission: default
+    aliases: donate
   thx:
     description: "Отблагодарить игрока за бустер"
     usage: /thx
@@ -22,9 +23,51 @@ commands:
   autosell:
     description: "Включение/отключение автоселла"
     usage: /autosell <on:off>
+    aliases: as
   lvl:
     description: "Повышение уровня"
     usage: /lvl
+    aliases: level
   upgrade:
     description: "Улучшение вещей"
     usage: /upgrade
+    aliases: u
+  faction:
+    description: "Выбор фракции"
+    usage: /faction
+  base:
+    description: "Телепортация на базу лоакции"
+    usage: /base
+  rubbish:
+    description: "Мусорка"
+    usage: /rubbish
+    aliases: rubb
+  hide:
+    description: "Спрятать игроков"
+    usage: /hide <on:off>
+  adminbooster:
+    description: "Админ бустер блоков на 2 дня"
+    usage: /adminbooster
+    permission: prison.adminbooster
+  test:
+    usage: /prisontest
+    permission: op
+  mine:
+    usage: /mine
+  spawn:
+    usage: /spawn
+  localboost:
+    usage: /localboost [player minutes]
+    permission: prison.localboost
+  adminLvl:
+    usage: /adminlvl [player lvl]
+    permission: prison.adminlvl
+  statWipe:
+    usage: /statwipe [player]
+    permission: prison.statwipe
+  cell:
+    usage: /cell
+  pay:
+    usage: /pay [игрок количество]
+    permission: default
+

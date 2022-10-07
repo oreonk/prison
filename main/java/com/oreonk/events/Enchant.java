@@ -1,6 +1,10 @@
 package com.oreonk.events;
 
 import com.oreonk.Msg;
+import me.davidml16.acubelets.api.CubeletsAPI;
+import me.davidml16.acubelets.handlers.CubeletBoxHandler;
+import me.davidml16.acubelets.objects.Cubelet;
+import me.davidml16.acubelets.objects.CubeletType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,7 +29,7 @@ public class Enchant implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void itemEnchant(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
             if (player.getInventory().getItemInMainHand().getType() == Material.ENCHANTED_BOOK) {
                 bool = 0;
                 Inventory gui = Bukkit.createInventory(player, 27, "Зачарование");
@@ -115,7 +119,7 @@ public class Enchant implements Listener {
             if (event.getCurrentItem().getType().equals(Material.GREEN_WOOL)){
                 bool = 3;
                 player.getInventory().addItem(player.getOpenInventory().getTopInventory().getItem(15));
-                player.getInventory().remove(player.getOpenInventory().getTopInventory().getItem(13));
+                player.getInventory().removeItem(player.getOpenInventory().getTopInventory().getItem(13));
                 player.closeInventory();
             } else if (event.getCurrentItem().getType().equals(Material.RED_WOOL)){
                 player.closeInventory();

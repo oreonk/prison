@@ -1,7 +1,7 @@
 package com.oreonk.commands;
 
 import com.oreonk.Msg;
-import com.oreonk.TestPlug;
+import com.oreonk.Prison;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,12 +14,18 @@ public class AutoSell implements CommandExecutor {
         if (sender instanceof Player) {
             if (command.getName().equalsIgnoreCase("autosell")) {
                 Player player = (Player) sender;
+                if (arguments.length == 0){
+                    Msg.send(player, ChatColor.YELLOW + "---- " + ChatColor.WHITE + "Автоматическая продажа " + ChatColor.GRAY + "(/as /autosell) " + ChatColor.YELLOW + "----");
+                    Msg.send(player, "&e/as &7on&f: включить автоматическую продажу");
+                    Msg.send(player, "&e/as &7on&ff: выключить автоматическую продажу");
+                    return true;
+                }
                 switch (arguments[0]) {
                     case "on":
                         if (player.hasPermission("prison.autosell")) {
                             if (!player.hasPermission("prison.autosell.on")) {
-                                TestPlug.getPermissions().playerAdd(player, "prison.autosell.on");
-                                TestPlug.getPermissions().playerRemove(player, "prison.autosell.off");
+                                Prison.getPermissions().playerAdd(player, "prison.autosell.on");
+                                Prison.getPermissions().playerRemove(player, "prison.autosell.off");
                                 Msg.send(player, ChatColor.GREEN + "Автоселл включен!");
                                 return true;
                             } else {
@@ -33,12 +39,13 @@ public class AutoSell implements CommandExecutor {
                     case "off":
                         if (player.hasPermission("prison.autosell")) {
                             if (!player.hasPermission("prison.autosell.off")) {
-                                TestPlug.getPermissions().playerAdd(player, "prison.autosell.off");
-                                TestPlug.getPermissions().playerRemove(player, "prison.autosell.on");
+                                Prison.getPermissions().playerAdd(player, "prison.autosell.off");
+                                Prison.getPermissions().playerRemove(player, "prison.autosell.on");
                                 Msg.send(player, ChatColor.GREEN + "Автоселл выключен!");
                                 return true;
                             } else {
                                 Msg.send(player, ChatColor.RED + "Автоселл уже выключен!");
+                                return true;
                             }
                     } else {
                         Msg.send(player, ChatColor.RED + "У вас нет прав для использования автоселла!");
