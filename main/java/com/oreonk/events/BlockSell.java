@@ -19,7 +19,7 @@ import java.util.Map;
 public class BlockSell implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onInteraction(PlayerInteractEvent event) {
-            if (event.getAction() == Action.LEFT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.OAK_WALL_SIGN) {
+            if (event.getAction() == Action.LEFT_CLICK_BLOCK && (event.getClickedBlock().getType() == Material.OAK_WALL_SIGN || event.getClickedBlock().getType() == Material.OAK_SIGN)) {
                     Economy economy = Prison.getEconomy();
                     Player player = event.getPlayer();
                     double globalBoost = 0.0;

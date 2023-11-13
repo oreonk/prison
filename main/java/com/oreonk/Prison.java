@@ -189,7 +189,7 @@ public class Prison extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MobKillBooster(), this);
         getServer().getPluginManager().registerEvents(new AuthorityMobCounter(), this);
         getServer().getPluginManager().registerEvents(new AuctionCommission(), this);
-        getServer().getPluginManager().registerEvents(new BossWorldInteract(), this);
+        //getServer().getPluginManager().registerEvents(new BossWorldInteract(), this);
         getServer().getPluginManager().registerEvents(new CollectionGui(), this);
         getServer().getPluginManager().registerEvents(new TestInteract(), this);
         getServer().getPluginManager().registerEvents(new MainMenuInteract(), this);
