@@ -1,6 +1,5 @@
 package com.oreonk.events;
 
-import com.oreonk.Msg;
 import com.oreonk.Prison;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,9 +14,9 @@ public class PlayerRespawn implements Listener {
     public void playerRespawnEvent(PlayerRespawnEvent event ){
         new BukkitRunnable() {
             public void run() {
-                PotionEffect effect = new PotionEffect(PotionEffectType.WEAKNESS, 30, 2);
+                PotionEffect effect = new PotionEffect(PotionEffectType.WEAKNESS, 600, 1);
                 event.getPlayer().addPotionEffect(effect);
             }
-        }.runTaskLater(Prison.getInstance(),40);
+        }.runTaskLater(Prison.getInstance(),60);
     }
 }

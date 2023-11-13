@@ -16,7 +16,7 @@ public class Mine implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] arguments) {
         Player player = (Player) sender;
         if (arguments.length == 0) {
-            Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cpanel mines " + player.getName());
+            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "cp mines " + player.getName());
             return true;
         }
         switch (arguments[0]) {
@@ -49,9 +49,38 @@ public class Mine implements CommandExecutor {
                         return true;
                     }
                 return true;
-                case "5":
+                case "4":
                     if (!Prison.getInstance().timer.containsKey(player)) {
-                        if (Prison.getInstance().lvl.get(player) >= 5) {
+                        if (Prison.getInstance().lvl.get(player) >= 4) {
+                            Prison.getInstance().timer.put(player, 4);
+                            Msg.send(player, ChatColor.GREEN + "Телепортация произойдёт через 3 секунды.");
+                            new BukkitRunnable() {
+                                public void run() {
+                                    if (!Prison.getInstance().timer.containsKey(player)){
+                                            this.cancel();
+                                        }
+                                    int time = Prison.getInstance().timer.get(player);
+                                    time--;
+                                    Prison.getInstance().timer.replace(player, time);
+                                    if (time == 1) {
+                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_wood " + player.getName());
+                                        Prison.getInstance().timer.remove(player);
+                                        this.cancel();
+                                    }
+                                }
+                            }.runTaskTimer(Prison.getInstance(), 0, 20);
+                        } else {
+                            Msg.send(player,ChatColor.RED + "Вам не хватает уровня..");
+                            return true;
+                        }
+                    } else {
+                        Msg.send(player, ChatColor.RED + "Вы уже телепортируетесь!");
+                        return true;
+                    }
+                return true;
+                case "6":
+                    if (!Prison.getInstance().timer.containsKey(player)) {
+                        if (Prison.getInstance().lvl.get(player) >= 6) {
                             Prison.getInstance().timer.put(player, 4);
                             Msg.send(player, ChatColor.GREEN + "Телепортация произойдёт через 3 секунды.");
                             new BukkitRunnable() {
@@ -92,14 +121,14 @@ public class Mine implements CommandExecutor {
                                     time--;
                                     Prison.getInstance().timer.replace(player, time);
                                     if (time == 1) {
-                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_hell " + player.getName());
+                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_snow " + player.getName());
                                         Prison.getInstance().timer.remove(player);
                                         this.cancel();
                                     }
                                 }
                             }.runTaskTimer(Prison.getInstance(), 0, 20);
                         } else {
-                            Msg.send(player,ChatColor.RED + "Вам не хватает уровня..");
+                            Msg.send(player, ChatColor.RED + "Вам не хватает уровня..");
                             return true;
                         }
                     } else {
@@ -107,7 +136,36 @@ public class Mine implements CommandExecutor {
                         return true;
                     }
                 return true;
-                case "9":
+                case "8":
+                    if (!Prison.getInstance().timer.containsKey(player)) {
+                        if (Prison.getInstance().lvl.get(player) >= 8) {
+                            Prison.getInstance().timer.put(player, 4);
+                            Msg.send(player, ChatColor.GREEN + "Телепортация произойдёт через 3 секунды.");
+                            new BukkitRunnable() {
+                                public void run() {
+                                    if (!Prison.getInstance().timer.containsKey(player)){
+                                            this.cancel();
+                                        }
+                                    int time = Prison.getInstance().timer.get(player);
+                                    time--;
+                                    Prison.getInstance().timer.replace(player, time);
+                                    if (time == 1) {
+                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_clay " + player.getName());
+                                        Prison.getInstance().timer.remove(player);
+                                        this.cancel();
+                                    }
+                                }
+                            }.runTaskTimer(Prison.getInstance(), 0, 20);
+                        } else {
+                            Msg.send(player, ChatColor.RED + "Вам не хватает уровня..");
+                            return true;
+                        }
+                    } else {
+                        Msg.send(player, ChatColor.RED + "Вы уже телепортируетесь!");
+                        return true;
+                    }
+                return true;
+                    case "9":
                     if (!Prison.getInstance().timer.containsKey(player)) {
                         if (Prison.getInstance().lvl.get(player) >= 9) {
                             Prison.getInstance().timer.put(player, 4);
@@ -121,7 +179,7 @@ public class Mine implements CommandExecutor {
                                     time--;
                                     Prison.getInstance().timer.replace(player, time);
                                     if (time == 1) {
-                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_clay " + player.getName());
+                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_sandstone " + player.getName());
                                         Prison.getInstance().timer.remove(player);
                                         this.cancel();
                                     }
@@ -150,13 +208,13 @@ public class Mine implements CommandExecutor {
                                     time--;
                                     Prison.getInstance().timer.replace(player, time);
                                     if (time == 1) {
-                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_sandstone " + player.getName());
+                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_obsiender " + player.getName());
                                         Prison.getInstance().timer.remove(player);
                                         this.cancel();
                                     }
                                 }
                             }.runTaskTimer(Prison.getInstance(), 0, 20);
-                        } else {
+                        } else{
                             Msg.send(player, ChatColor.RED + "Вам не хватает уровня..");
                             return true;
                         }
@@ -165,9 +223,9 @@ public class Mine implements CommandExecutor {
                         return true;
                     }
                 return true;
-                case "13":
+                case "12":
                     if (!Prison.getInstance().timer.containsKey(player)) {
-                        if (Prison.getInstance().lvl.get(player) >= 13) {
+                        if (Prison.getInstance().lvl.get(player) >= 12) {
                             Prison.getInstance().timer.put(player, 4);
                             Msg.send(player, ChatColor.GREEN + "Телепортация произойдёт через 3 секунды.");
                             new BukkitRunnable() {
@@ -186,93 +244,6 @@ public class Mine implements CommandExecutor {
                                 }
                             }.runTaskTimer(Prison.getInstance(), 0, 20);
                         } else {
-                            Msg.send(player, ChatColor.RED + "Вам не хватает уровня..");
-                            return true;
-                        }
-                    } else {
-                        Msg.send(player, ChatColor.RED + "Вы уже телепортируетесь!");
-                        return true;
-                    }
-                return true;
-                    case "15":
-                    if (!Prison.getInstance().timer.containsKey(player)) {
-                        if (Prison.getInstance().lvl.get(player) >= 15) {
-                            Prison.getInstance().timer.put(player, 4);
-                            Msg.send(player, ChatColor.GREEN + "Телепортация произойдёт через 3 секунды.");
-                            new BukkitRunnable() {
-                                public void run() {
-                                    if (!Prison.getInstance().timer.containsKey(player)){
-                                            this.cancel();
-                                        }
-                                    int time = Prison.getInstance().timer.get(player);
-                                    time--;
-                                    Prison.getInstance().timer.replace(player, time);
-                                    if (time == 1) {
-                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_snow " + player.getName());
-                                        Prison.getInstance().timer.remove(player);
-                                        this.cancel();
-                                    }
-                                }
-                            }.runTaskTimer(Prison.getInstance(), 0, 20);
-                        } else {
-                            Msg.send(player, ChatColor.RED + "Вам не хватает уровня..");
-                            return true;
-                        }
-                    } else {
-                        Msg.send(player, ChatColor.RED + "Вы уже телепортируетесь!");
-                        return true;
-                    }
-                return true;
-                case "17":
-                    if (!Prison.getInstance().timer.containsKey(player)) {
-                        if (Prison.getInstance().lvl.get(player) >= 17) {
-                            Prison.getInstance().timer.put(player, 4);
-                            Msg.send(player, ChatColor.GREEN + "Телепортация произойдёт через 3 секунды.");
-                            new BukkitRunnable() {
-                                public void run() {
-                                    if (!Prison.getInstance().timer.containsKey(player)){
-                                            this.cancel();
-                                        }
-                                    int time = Prison.getInstance().timer.get(player);
-                                    time--;
-                                    Prison.getInstance().timer.replace(player, time);
-                                    if (time == 1) {
-                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_wood " + player.getName());
-                                        Prison.getInstance().timer.remove(player);
-                                        this.cancel();
-                                    }
-                                }
-                            }.runTaskTimer(Prison.getInstance(), 0, 20);
-                        } else{
-                            Msg.send(player, ChatColor.RED + "Вам не хватает уровня..");
-                            return true;
-                        }
-                    } else {
-                        Msg.send(player, ChatColor.RED + "Вы уже телепортируетесь!");
-                        return true;
-                    }
-                return true;
-                case "19":
-                    if (!Prison.getInstance().timer.containsKey(player)) {
-                        if (Prison.getInstance().lvl.get(player) >= 19) {
-                            Prison.getInstance().timer.put(player, 4);
-                            Msg.send(player, ChatColor.GREEN + "Телепортация произойдёт через 3 секунды.");
-                            new BukkitRunnable() {
-                                public void run() {
-                                    if (!Prison.getInstance().timer.containsKey(player)){
-                                            this.cancel();
-                                        }
-                                    int time = Prison.getInstance().timer.get(player);
-                                    time--;
-                                    Prison.getInstance().timer.replace(player, time);
-                                    if (time == 1) {
-                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_prismarine " + player.getName());
-                                        Prison.getInstance().timer.remove(player);
-                                        this.cancel();
-                                    }
-                                }
-                            }.runTaskTimer(Prison.getInstance(), 0, 20);
-                        } else {
                             Msg.send(player,ChatColor.RED + "Вам не хватает уровня..");
                             return true;
                         }
@@ -281,9 +252,9 @@ public class Mine implements CommandExecutor {
                         return true;
                     }
                 return true;
-                case "21":
+                case "14":
                     if (!Prison.getInstance().timer.containsKey(player)) {
-                        if (Prison.getInstance().lvl.get(player) >= 21) {
+                        if (Prison.getInstance().lvl.get(player) >= 14) {
                             Prison.getInstance().timer.put(player, 4);
                             Msg.send(player, ChatColor.GREEN + "Телепортация произойдёт через 3 секунды.");
                             new BukkitRunnable() {
@@ -295,7 +266,7 @@ public class Mine implements CommandExecutor {
                                     time--;
                                     Prison.getInstance().timer.replace(player, time);
                                     if (time == 1) {
-                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_ender " + player.getName());
+                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_hell " + player.getName());
                                         Prison.getInstance().timer.remove(player);
                                         this.cancel();
                                     }
@@ -311,9 +282,9 @@ public class Mine implements CommandExecutor {
                         return true;
                     }
                 return true;
-                case "23":
+                case "16":
                     if (!Prison.getInstance().timer.containsKey(player)) {
-                        if (Prison.getInstance().lvl.get(player) >= 23) {
+                        if (Prison.getInstance().lvl.get(player) >= 16) {
                             Prison.getInstance().timer.put(player, 4);
                             Msg.send(player, ChatColor.GREEN + "Телепортация произойдёт через 3 секунды.");
                             new BukkitRunnable() {
@@ -325,7 +296,7 @@ public class Mine implements CommandExecutor {
                                     time--;
                                     Prison.getInstance().timer.replace(player, time);
                                     if (time == 1) {
-                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_obsiender " + player.getName());
+                                        Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp mine_ender " + player.getName());
                                         Prison.getInstance().timer.remove(player);
                                         this.cancel();
                                     }
@@ -375,86 +346,16 @@ public class Mine implements CommandExecutor {
                         return true;
                     }
                 return true;
-                case "6":
+                case "18":
                     if (!Prison.getInstance().timer.containsKey(player)) {
-                        if (Prison.getInstance().lvl.get(player) >= 6) {
-                            if (player.hasPermission("prison.premium.slums")) {
+                            if (Prison.getInstance().lvl.get(player) >= 18) {
                                 Prison.getInstance().timer.put(player, 4);
                                 Msg.send(player, ChatColor.GREEN + "Телепортация произойдёт через 3 секунды.");
                                 new BukkitRunnable() {
                                     public void run() {
                                         if (!Prison.getInstance().timer.containsKey(player)){
-                                            this.cancel();
-                                        }
-                                        int time = Prison.getInstance().timer.get(player);
-                                        time--;
-                                        Prison.getInstance().timer.replace(player, time);
-                                        if (time == 1) {
-                                            Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp stone_under " + player.getName());
-                                            Prison.getInstance().timer.remove(player);
-                                            this.cancel();
-                                        }
-                                    }
-                                }.runTaskTimer(Prison.getInstance(), 0, 20);
-                            }else {
-                                Msg.send(player, ChatColor.RED + "У вас нет пропуска..");
-                                return true;
-                            }
-                        } else {
-                            Msg.send(player,ChatColor.RED + "Вам не хватает уровня..");
-                            return true;
-                        }
-                    } else {
-                        Msg.send(player, ChatColor.RED + "Вы уже телепортируетесь!");
-                        return true;
-                    }
-                return true;
-                case "10":
-                    if (!Prison.getInstance().timer.containsKey(player)) {
-                        if (Prison.getInstance().lvl.get(player) >= 10) {
-                            if (player.hasPermission("prison.premium.podval")) {
-
-                                Prison.getInstance().timer.put(player, 4);
-                                Msg.send(player, ChatColor.GREEN + "Телепортация произойдёт через 3 секунды.");
-                                new BukkitRunnable() {
-                                    public void run() {
-                                        if (!Prison.getInstance().timer.containsKey(player)){
-                                            this.cancel();
-                                        }
-                                        int time = Prison.getInstance().timer.get(player);
-                                        time--;
-                                        Prison.getInstance().timer.replace(player, time);
-                                        if (time == 1) {
-                                            Prison.getInstance().getServer().dispatchCommand(Bukkit.getConsoleSender(), "cmi warp podval " + player.getName());
-                                            Prison.getInstance().timer.remove(player);
-                                            this.cancel();
-                                        }
-                                    }
-                                }.runTaskTimer(Prison.getInstance(), 0, 20);
-                            } else {
-                            Msg.send(player, ChatColor.RED + "У вас нет пропуска..");
-                            return true;
-                        }
-                        } else {
-                            Msg.send(player, ChatColor.RED + "Вам не хватает уровня..");
-                            return true;
-                        }
-                    } else {
-                        Msg.send(player, ChatColor.RED + "Вы уже телепортируетесь!");
-                        return true;
-                    }
-                return true;
-                case "20":
-                    if (!Prison.getInstance().timer.containsKey(player)) {
-                        if (Prison.getInstance().lvl.get(player) >= 20) {
-                            if (player.hasPermission("prison.premium.castle")) {
-                                Prison.getInstance().timer.put(player, 4);
-                                Msg.send(player, ChatColor.GREEN + "Телепортация произойдёт через 3 секунды.");
-                                new BukkitRunnable() {
-                                    public void run() {
-                                        if (!Prison.getInstance().timer.containsKey(player)){
-                                            this.cancel();
-                                        }
+                                                this.cancel();
+                                            }
                                         int time = Prison.getInstance().timer.get(player);
                                         time--;
                                         Prison.getInstance().timer.replace(player, time);
@@ -465,18 +366,16 @@ public class Mine implements CommandExecutor {
                                         }
                                     }
                                 }.runTaskTimer(Prison.getInstance(), 0, 20);
-                            } else {
-                                Msg.send(player, ChatColor.RED + "У вас нет пропуска");
+                            }
+                            else {
+                                Msg.send(player, "Вам не хватает уровня..");
                                 return true;
                             }
                         } else {
-                            Msg.send(player,ChatColor.RED + "Вам не хватает уровня");
+                            Msg.send(player, ChatColor.RED + "Вы уже телепортируетесь!");
                             return true;
                         }
-                    } else {
-                        Msg.send(player, ChatColor.RED + "Вы уже телепортируетесь!");
-                        return true;
-                    }
+                    return true;
         }
         return false;
     }

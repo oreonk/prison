@@ -259,7 +259,7 @@ public class DonateMenus implements Listener {
 
                 ItemStack first = new ItemStack(Material.IRON_INGOT);
                 ItemMeta first_meta = first.getItemMeta();
-                first_meta.setDisplayName(ChatColor.YELLOW+"Бустер монет на 15 минут");
+                first_meta.setDisplayName(ChatColor.YELLOW+"Бустер монет х1.5 на 15 минут");
                 ArrayList<String> first_lore = new ArrayList<>();
                 first_lore.add(" ");
                 first_lore.add("Цена - 25 " + ChatColor.WHITE + "");
@@ -267,17 +267,37 @@ public class DonateMenus implements Listener {
                 first.setItemMeta(first_meta);
                 gui.setItem(10, first);
 
-                ItemStack fourth = new ItemStack(Material.DIRT);
+                ItemStack second = new ItemStack(Material.IRON_BLOCK);
+                ItemMeta second_meta = second.getItemMeta();
+                second_meta.setDisplayName(ChatColor.YELLOW+"Бустер монет х2 на 15 минут");
+                ArrayList<String> second_lore = new ArrayList<>();
+                second_lore.add(" ");
+                second_lore.add("Цена - 40 " + ChatColor.WHITE + "");
+                second_meta.setLore(second_lore);
+                second.setItemMeta(second_meta);
+                gui.setItem(12, second);
+
+                ItemStack third = new ItemStack(Material.DIRT);
+                ItemMeta third_meta = third.getItemMeta();
+                third_meta.setDisplayName(ChatColor.YELLOW+"Бустер блоков x1.5 на 15 минут");
+                ArrayList<String> third_lore = new ArrayList<>();
+                third_lore.add(" ");
+                third_lore.add("Цена - 25 " + ChatColor.WHITE + "");
+                third_meta.setLore(third_lore);
+                third.setItemMeta(third_meta);
+                gui.setItem(14, third);
+
+                ItemStack fourth = new ItemStack(Material.BEDROCK);
                 ItemMeta fourth_meta = fourth.getItemMeta();
-                fourth_meta.setDisplayName(ChatColor.YELLOW+"Бустер блоков на 15 минут");
+                fourth_meta.setDisplayName(ChatColor.YELLOW+"Бустер блоков x2 на 15 минут");
                 ArrayList<String> fourth_lore = new ArrayList<>();
                 fourth_lore.add(" ");
-                fourth_lore.add("Цена - 25 " + ChatColor.WHITE + "");
+                fourth_lore.add("Цена - 40 " + ChatColor.WHITE + "");
                 fourth_meta.setLore(fourth_lore);
                 fourth.setItemMeta(fourth_meta);
-                gui.setItem(14, fourth);
+                gui.setItem(16, fourth);
 
-                gui.setItem(13, air);
+
                 player.openInventory(gui);
             }
                 if (event.getView().getTitle().equalsIgnoreCase("Покупка приватного бустера") && event.getCurrentItem().getType().equals(Material.GREEN_WOOL)){
@@ -382,22 +402,32 @@ public class DonateMenus implements Listener {
                     if (!Prison.getPlugin(Prison.class).privateBooster.containsKey(player.getUniqueId())) {
                         if (antBalance>=25) {
                             Prison.getPlugin(Prison.class).privateBooster.put(player.getUniqueId(), 15);
+                            Prison.getInstance().privateBoosterMultiplier.put(player.getUniqueId(), 1);
                             try {
                                 economy.withdrawAntaresCoins(25);
                             } catch (IOException e){
                                 e.printStackTrace();
                             }
-                            new BukkitRunnable() {
-                                public void run(){
-                                Integer timer = Prison.getPlugin(Prison.class).privateBooster.get(player.getUniqueId());
-                                timer--;
-                                    Prison.getPlugin(Prison .class).privateBooster.replace(player.getUniqueId(),timer);
-                                    if(timer<=0){
-                                        Prison.getPlugin(Prison.class).privateBooster.clear();
-                                        this.cancel();
-                                    }
-                                }
-                            }.runTaskTimer(Prison.getInstance(), 0, 1200);
+                            Msg.send(player, ChatColor.GREEN + "Вы успешно приобрели личный бустер денег х1.5 на 15 минут!");
+                            player.closeInventory();
+                        } else{
+                            Msg.send(player, ChatColor.RED + "У вас недостаточно средств!");
+                        }
+                    } else {
+                        Msg.send(player, ChatColor.RED + "Уже активен другой бустер!");
+                    }
+                    }
+                else if (event.getView().getTitle().equalsIgnoreCase("Локальные бустеры") && event.getCurrentItem().getType().equals(Material.IRON_BLOCK)){
+                    if (!Prison.getPlugin(Prison.class).privateBooster.containsKey(player.getUniqueId())) {
+                        if (antBalance>=40) {
+                            Prison.getPlugin(Prison.class).privateBooster.put(player.getUniqueId(), 15);
+                            Prison.getInstance().privateBoosterMultiplier.put(player.getUniqueId(), 2);
+                            try {
+                                economy.withdrawAntaresCoins(40);
+                            } catch (IOException e){
+                                e.printStackTrace();
+                            }
+                            Msg.send(player, ChatColor.GREEN + "Вы успешно приобрели личный бустер денег х2 на 15 минут!");
                             player.closeInventory();
                         } else{
                             Msg.send(player, ChatColor.RED + "У вас недостаточно средств!");
@@ -410,22 +440,32 @@ public class DonateMenus implements Listener {
                     if (!Prison.getPlugin(Prison.class).privateBlockBooster.containsKey(player.getUniqueId())) {
                         if (antBalance>=25) {
                             Prison.getPlugin(Prison.class).privateBlockBooster.put(player.getUniqueId(), 15);
+                            Prison.getInstance().privateBlockBoosterMultiplier.put(player.getUniqueId(), 1);
                             try {
                                 economy.withdrawAntaresCoins(25);
                             } catch (IOException e){
                                 e.printStackTrace();
                             }
-                            new BukkitRunnable() {
-                                public void run(){
-                                Integer timer = Prison.getPlugin(Prison.class).privateBlockBooster.get(player.getUniqueId());
-                                timer--;
-                                    Prison.getPlugin(Prison .class).privateBlockBooster.replace(player.getUniqueId(),timer);
-                                    if(timer<=0){
-                                        Prison.getPlugin(Prison.class).privateBlockBooster.clear();
-                                        this.cancel();
-                                    }
-                                }
-                            }.runTaskTimer(Prison.getInstance(), 0, 1200);
+                            Msg.send(player, ChatColor.GREEN + "Вы успешно приобрели личный бустер блоков х1.5 на 15 минут!");
+                            player.closeInventory();
+                        } else{
+                            Msg.send(player, ChatColor.RED + "У вас недостаточно средств!");
+                        }
+                    } else {
+                        Msg.send(player, ChatColor.RED + "Уже активен другой бустер!");
+                    }
+                    }
+                else if (event.getView().getTitle().equalsIgnoreCase("Локальные бустеры") && event.getCurrentItem().getType().equals(Material.BEDROCK)){
+                    if (!Prison.getPlugin(Prison.class).privateBlockBooster.containsKey(player.getUniqueId())) {
+                        if (antBalance>=25) {
+                            Prison.getPlugin(Prison.class).privateBlockBooster.put(player.getUniqueId(), 15);
+                            Prison.getInstance().privateBlockBoosterMultiplier.put(player.getUniqueId(), 2);
+                            try {
+                                economy.withdrawAntaresCoins(40);
+                            } catch (IOException e){
+                                e.printStackTrace();
+                            }
+                            Msg.send(player, ChatColor.GREEN + "Вы успешно приобрели личный бустер блоков х2 на 15 минут!");
                             player.closeInventory();
                         } else{
                             Msg.send(player, ChatColor.RED + "У вас недостаточно средств!");

@@ -17,7 +17,7 @@ public class Factions implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] arguments) {
         Player player = (Player) sender;
-        if (Prison.getInstance().lvl.get(player) >= 8) {
+        if (Prison.getInstance().lvl.get(player) >= 5) {
             if (Prison.getInstance().faction.get(player).equals("0")) {
                 Inventory gui = Bukkit.createInventory(player, 27, "Выбор фракции");
 
@@ -63,7 +63,7 @@ public class Factions implements CommandExecutor {
             }
         }
         else {
-            Msg.send(player, ChatColor.RED + "Для вступления во фракцию вам необходим 8 уровень!");
+            Msg.send(player, ChatColor.RED + "Для вступления во фракцию вам необходим 5 уровень!");
             return true;
         }
     }

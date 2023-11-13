@@ -5,12 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySQL {
-    private String host = Prison.getPlugin(Prison.class).getConfig().getString("DB.host");
-    private String port = Prison.getPlugin(Prison.class).getConfig().getString("DB.port");
-    private String database = Prison.getPlugin(Prison.class).getConfig().getString("DB.database");
-    private String ssl = Prison.getPlugin(Prison.class).getConfig().getString("DB.ssl");
-    private String username = Prison.getPlugin(Prison.class).getConfig().getString("DB.username");
-    private String password = Prison.getPlugin(Prison.class).getConfig().getString("DB.password");
+    private String host = "localhost";
+    private String port = "3306";
+    private String database = "donate";
+    private String ssl = "false";
+    private String username = "root";
+    private String password = "k8mhEfxjZvkmj3nmJM";
 
     private Connection connection;
 

@@ -48,26 +48,61 @@ commands:
   adminbooster:
     description: "Админ бустер блоков на 2 дня"
     usage: /adminbooster
-    permission: prison.adminbooster
+    permission: prison.admin.adminbooster
   test:
     usage: /prisontest
-    permission: op
+    permission: prison.test.test
   mine:
-    usage: /mine
+    usage: /mine *номер шахты*
   spawn:
     usage: /spawn
   localboost:
-    usage: /localboost [player minutes]
-    permission: prison.localboost
+    usage: /localboost [player minutes multiplier]
+    permission: prison.admin.localboost
   adminLvl:
     usage: /adminlvl [player lvl]
-    permission: prison.adminlvl
+    permission: prison.admin.adminlvl
   statWipe:
     usage: /statwipe [player]
-    permission: prison.statwipe
+    permission: prison.admin.statwipe
   cell:
     usage: /cell
   pay:
     usage: /pay [игрок количество]
     permission: default
+  achievements:
+    usage: /achievements
+    permission: default
+  adminmoney:
+    usage: /adminmoney [игрок количество]
+    permission: prison.admin.adminmoney
+  balance:
+    usage: /balance | /money
+    permission: default
+    aliases: money
+  plml:
+    usage: /plml [player multiplier]
+    permission: prison.admin.localboost
+  localblockboost:
+    usage: /localblockboost [player minutes multiplier]
+    permission: prison.admin.localboost
+  admintakemoney:
+    usage: /admintakemoney [player amount]
+    permission: prison.admin.adminmoney
+  admincommissionadd:
+    usage: /admincommissionadd [player <1/2>]
+    permission: prison.admin.adminmoney
+  localmobboost:
+    usage: /localmobboost [player minutes multiplier]
+    permission: prison.admin.localboost
+  menu:
+    usage: /menu
+    permission: default
+  moneylvlpercent:
+    usage: /moneylvlpercent player *percent*
+    permission: prison.admin.adminmoney
+  givestars:
+    usage: /givestars player *amount*
+    permission: prison.admin.givestars
+
 

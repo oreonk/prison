@@ -76,6 +76,7 @@ public class Upgrade implements CommandExecutor {
                     upgrade.add("STONE_AXE");
                     upgrade.add("IRON_AXE");
                     upgrade.add("DIAMOND_AXE");
+                    upgrade.add("WOODEN_HOE");
                     upgradeArmor.add("LEATHER_HELMET");
                     upgradeArmor.add("CHAINMAIL_HELMET");
                     upgradeArmor.add("IRON_HELMET");
@@ -172,6 +173,13 @@ public class Upgrade implements CommandExecutor {
                                             secondItem_meta.setLore(secondItem_lore);
                                             secondItem_meta.setUnbreakable(true);
                                             secondItem.setItemMeta(secondItem_meta);
+                                        } else if (mat.equals(Material.WOODEN_HOE)){
+                                            secondItem_meta.addEnchant(Enchantment.DIG_SPEED, 3, false);
+                                            ArrayList<String> secondItem_lore = new ArrayList<>();
+                                            secondItem_lore.add(ChatColor.GREEN + "Максимальное улучшение!");
+                                            secondItem_meta.setLore(secondItem_lore);
+                                            secondItem_meta.setUnbreakable(true);
+                                            secondItem.setItemMeta(secondItem_meta);
                                         }
                                     }
                                 }
@@ -199,7 +207,7 @@ public class Upgrade implements CommandExecutor {
                                     secondItem.setItemMeta(secondItem_meta);
                                     secondItem.addEnchantments(player.getInventory().getItemInMainHand().getEnchantments());
                                     secondItem.removeEnchantment(Enchantment.DIG_SPEED);
-                                } else if(!item.getItemMeta().getDisplayName().contains("Редкая") && !item.getItemMeta().getDisplayName().contains("Героическая")){
+                                } else if(!item.getItemMeta().getDisplayName().contains("Редкая") && !item.getItemMeta().getDisplayName().contains("Героическая") && !item.getType().equals(Material.WOODEN_HOE)){
                                     if (eff == 3) {
                                         secondItem.setType(Material.valueOf(upgrade.get(number)));
                                         secondItem_meta.setUnbreakable(true);
@@ -344,7 +352,6 @@ public class Upgrade implements CommandExecutor {
                             }
                         }
                     }
-                    String st = PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block:DIRT,STONE,OBSIDIAN,GRANITE,DIORITE,ANDESITE,GOLD_BLOCK,IRON_BLOCK,DIAMOND_BLOCK,COAL_BLOCK,GRAVEL,SAND,NETHERRACK,OAK_LEAVES,BIRCH_LEAVES,SPRUCE_LEAVES,JUNGLE_LEAVES,DARK_OAK_LEAVES,OAK_WOOD,BIRCH_LOG,SPRUCE_LOG,JUNGLE_LOG,DARK_OAK_WOOD,STRIPPED_JUNGLE_WOOD,STRIPPED_OAK_WOOD,STRIPPED_DARK_OAK_WOOD,STRIPPED_SPRUCE_WOOD,GOLD_ORE,IRON_ORE,COAL_ORE,DIAMOND_ORE,REDSTONE_ORE,EMERALD_ORE,NETHER_QUARTZ_ORE,LAPIS_ORE,WHITE_CONCRETE,ORANGE_CONCRETE,MAGENTA_CONCRETE,LIGHT_BLUE_CONCRETE,YELLOW_CONCRETE,LIME_CONCRETE,PINK_CONCRETE,GRAY_CONCRETE,LIGHT_GRAY_CONCRETE,CYAN_CONCRETE,PURPLE_CONCRETE,BLUE_CONCRETE,BROWN_CONCRETE,GREEN_CONCRETE,RED_CONCRETE,BLACK_CONCRETE,PURPUR_BLOCK,PURPUR_PILLAR,END_STONE,END_STONE_BRICKS,NETHER_BRICKS,RED_NETHER_BRICKS,NETHER_WART_BLOCK,STONE_BRICKS,MOSSY_STONE_BRICKS,CRACKED_STONE_BRICKS,CHISELED_STONE_BRICKS,BRICKS,SANDSTONE,CHISELED_SANDSTONE,CUT_SANDSTONE,RED_SANDSTONE,CYAN_GLAZED_TERRACOTTA,PRISMARINE,PRISMARINE_BRICKS,DARK_PRISMARINE,SEA_LANTERN,WHITE_WOOL,ORANGE_WOOL,GRAY_WOOL,COBWEB,ICE,BLUE_ICE,PACKED_ICE,PINK_GLAZED_TERRACOTTA,RED_GLAZED_TERRACOTTA,GRAY_GLAZED_TERRACOTTA,SNOWB_BLOCK,DEEPSLATE_BRICKS,POLISHED_BLACKSTONE_BRICKS,CRACKED_DEEPSLATE_BRICKS,BASALT,DEEPSLATE,COBBLED_DEEPSLATE,GLIDED_BLACKSTONE,CRYING_OBSIDIAN%");
                     int ebal = (int) economy.getBalance(player);
                     String bal = String.valueOf(ebal);
                     String materr = firstItem.getType().toString();
@@ -355,16 +362,20 @@ public class Upgrade implements CommandExecutor {
                         lvl = 6;
                         path = "Upgrade." + materr;
                     }
+                    Msg.send(player, "Проверка " + path);
                     ArrayList<String> configs = (ArrayList<String>) config.getConfigurationSection(path).getStringList(String.valueOf(lvl));
                     int cfgLenght = configs.size();
                     if (firstItem.containsEnchantment(Enchantment.DIG_SPEED) || secondItem.containsEnchantment(Enchantment.DIG_SPEED)) {
-                        stat_lore.add(ChatColor.GRAY + bal + "/" + configs.get(1) + ChatColor.WHITE + " ");
-                        stat_lore.add(ChatColor.GRAY + st + "/" + configs.get(0) + " Блоков");
-                        for (int i = 2; i < cfgLenght; i = i + 3) {
+                        stat_lore.add(ChatColor.GRAY + bal + "/" + configs.get(0) + ChatColor.WHITE + " ");
+                        for (int i = 1; i < cfgLenght; i = i + 3) {
                             String whatToEarn = configs.get(i);
                             String howMuch = configs.get(i + 1);
                             String earnName = configs.get(i + 2);
-                            stat_lore.add(ChatColor.GRAY + PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block:" + whatToEarn + "%") + "/" + howMuch + " " + earnName);
+                            if (!PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block:" + whatToEarn + "%").contains("Invalid")) {
+                                stat_lore.add(ChatColor.GRAY + PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block:" + whatToEarn + "%") + "/" + howMuch + " " + earnName);
+                            } else {
+                                stat_lore.add(ChatColor.GRAY + PlaceholderAPI.setPlaceholders(player, "%statistic_kill_entity:" + whatToEarn + "%") + "/" + howMuch + " " + earnName);
+                            }
                         }
                     } else if (firstItem.containsEnchantment(Enchantment.DAMAGE_ALL) || secondItem.containsEnchantment(Enchantment.DAMAGE_ALL) || firstItem.containsEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL) || secondItem.containsEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL)) {
                         stat_lore.add(ChatColor.GRAY + bal + "/" + configs.get(0) + ChatColor.WHITE + " ");

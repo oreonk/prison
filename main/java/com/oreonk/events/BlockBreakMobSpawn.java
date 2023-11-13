@@ -18,15 +18,19 @@ import java.util.Random;
 
 public class BlockBreakMobSpawn implements Listener {
     public HashMap<Entity, Player> opossum = new HashMap<>() {};
+    double xOne = 2394;
+    double xTwo = 2428;
+    double zOne = 271;
+    double zTwo = 305;
+    double xThree = 2335;
+    double xFour = 2361;
+    double zThree = -742;
+    double zFour = -768;
     @EventHandler
     public void mobSpawn(BlockBreakEvent event) {
         if (event.getBlock().getType().equals(Material.STONE)) {
             if (!opossum.containsValue(event.getPlayer())) {
                 //Спавн опоссума при ломании камня на базе
-                double xOne = 100;
-                double xTwo = 200;
-                double zOne = 100;
-                double zTwo = 100;
                 Location location = event.getBlock().getLocation();
                 if (location.getX() >= xOne && location.getX() <= xTwo) {
                     if (location.getZ() >= zOne && location.getZ() <= zTwo) {
@@ -43,11 +47,7 @@ public class BlockBreakMobSpawn implements Listener {
                     }
                 }
                 //Спаввн опоссума при ломании камня на шахте золота
-                double xThree = 300;
-                double xFour = 400;
-                double zThree = 300;
-                double zFour = 400;
-                if (location.getX() >= xThree && location.getX() <= xFour) {
+                if (location.getX() >= xFour && location.getX() <= xThree) {
                     if (location.getZ() >= zThree && location.getZ() <= zFour) {
                         Random r = new Random();
                         int percent = r.nextInt(100);

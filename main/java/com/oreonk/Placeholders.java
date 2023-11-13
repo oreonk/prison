@@ -5,6 +5,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 
 public class Placeholders extends PlaceholderExpansion {
@@ -53,243 +56,284 @@ public class Placeholders extends PlaceholderExpansion {
                 return "&e";
             }
         }
-        if (params.equalsIgnoreCase("block_top_1")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getBlockTopOne());
+        //Процент от денег, нужных на ап уровня
+        if (params.toLowerCase().contains("lvlpercent_")){
+            String numberOnly= params.replaceAll("[^0-9]", "");
+            double amount = Double.parseDouble(numberOnly);
+            //Выборка следующего уровня игрока
+            int lvl = (Prison.getInstance().lvl.get(player)) + 1;
+            ArrayList<String> config = (ArrayList<String>) Prison.getInstance().getLvlConfig().getConfigurationSection("Lvl").getStringList(String.valueOf(lvl));
+            String stringAmount = config.get(1);
+            Double finalAmount = Integer.parseInt(stringAmount) * amount / 100;
+            return String.valueOf(finalAmount);
+        }
+
+        //Открытые кейсы до рестарта
+        if (params.equalsIgnoreCase("cases")){
+            return String.valueOf(Prison.getInstance().cases_counter.get(player.getUniqueId()));
+        }
+
+        //Сделал ли игрок пожертвование в церковь
+        if (params.equalsIgnoreCase("church")){
+            return String.valueOf(Prison.getInstance().church_counter.get(player.getUniqueId()));
+        }
+
+        //Количество найденых в блоках коллекционных предметов
+        if (params.equalsIgnoreCase("collection")){
+            return String.valueOf(Prison.getInstance().collection_counter.get(player.getUniqueId()));
+        }
+
+        //НУЖНО АПДЕЙТИТЬ
+        if (params.equalsIgnoreCase("authority")){
+            return String.valueOf(Prison.getInstance().authorityStat.get(player));
+        }
+
+        if (params.equalsIgnoreCase("balance")){
+
+            double balance = Prison.getEconomy().getBalance(player);
+            DecimalFormat decimalFormat = new DecimalFormat("##################0.###");
+            return decimalFormat.format(balance).replace("," , ".");
+        }
+
+        //Топы
+        if (params.equalsIgnoreCase("block_top_1")){
+            return String.valueOf(Prison.getInstance().blockTopValues.get(0));
         }
         if (params.equalsIgnoreCase("block_topName_1")) {
-            if (!Prison.getInstance().getDatabase().getBlockTopOneName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopOneName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopOneName())).getName();
+            if (!Prison.getInstance().blockTopUUIDS.get(0).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(0))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(0))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopOneName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(0))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("block_top_2")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getBlockTopTwo());
+        if (params.equalsIgnoreCase("block_top_2")){
+            return String.valueOf(Prison.getInstance().blockTopValues.get(1));
         }
         if (params.equalsIgnoreCase("block_topName_2")) {
-            if (!Prison.getInstance().getDatabase().getBlockTopTwoName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopTwoName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopTwoName())).getName();
+            if (!Prison.getInstance().blockTopUUIDS.get(1).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(1))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(1))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopTwoName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(1))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("block_top_3")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getBlockTopThree());
+        if (params.equalsIgnoreCase("block_top_3")){
+            return String.valueOf(Prison.getInstance().blockTopValues.get(2));
         }
         if (params.equalsIgnoreCase("block_topName_3")) {
-            if (!Prison.getInstance().getDatabase().getBlockTopThreeName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopThreeName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopThreeName())).getName();
+            if (!Prison.getInstance().blockTopUUIDS.get(2).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(2))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(2))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopThreeName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(2))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("block_top_4")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getBlockTopFour());
+        if (params.equalsIgnoreCase("block_top_4")){
+            return String.valueOf(Prison.getInstance().blockTopValues.get(3));
         }
         if (params.equalsIgnoreCase("block_topName_4")) {
-            if (!Prison.getInstance().getDatabase().getBlockTopFourName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopFourName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopFourName())).getName();
+            if (!Prison.getInstance().blockTopUUIDS.get(3).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(3))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(3))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopFourName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(3))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("block_top_5")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getBlockTopFive());
+        if (params.equalsIgnoreCase("block_top_5")){
+            return String.valueOf(Prison.getInstance().blockTopValues.get(4));
         }
         if (params.equalsIgnoreCase("block_topName_5")) {
-            if (!Prison.getInstance().getDatabase().getBlockTopFiveName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopFiveName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopFiveName())).getName();
+            if (!Prison.getInstance().blockTopUUIDS.get(4).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(4))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(4))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopFiveName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(4))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("block_top_6")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getBlockTopSix());
+        if (params.equalsIgnoreCase("block_top_6")){
+            return String.valueOf(Prison.getInstance().blockTopValues.get(5));
         }
         if (params.equalsIgnoreCase("block_topName_6")) {
-            if (!Prison.getInstance().getDatabase().getBlockTopSixName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopSixName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopSixName())).getName();
+            if (!Prison.getInstance().blockTopUUIDS.get(5).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(5))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(5))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopSixName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(5))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("block_top_7")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getBlockTopSeven());
+        if (params.equalsIgnoreCase("block_top_7")){
+            return String.valueOf(Prison.getInstance().blockTopValues.get(6));
         }
         if (params.equalsIgnoreCase("block_topName_7")) {
-            if (!Prison.getInstance().getDatabase().getBlockTopSevenName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopSevenName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopSevenName())).getName();
+            if (!Prison.getInstance().blockTopUUIDS.get(6).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(6))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(6))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopSevenName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(6))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("block_top_8")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getBlockTopEight());
+        if (params.equalsIgnoreCase("block_top_8")){
+            return String.valueOf(Prison.getInstance().blockTopValues.get(7));
         }
         if (params.equalsIgnoreCase("block_topName_8")) {
-            if (!Prison.getInstance().getDatabase().getBlockTopEightName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopEightName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopEightName())).getName();
+            if (!Prison.getInstance().blockTopUUIDS.get(7).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(7))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(7))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopEightName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(7))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("block_top_9")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getBlockTopNine());
+        if (params.equalsIgnoreCase("block_top_9")){
+            return String.valueOf(Prison.getInstance().blockTopValues.get(8));
         }
         if (params.equalsIgnoreCase("block_topName_9")) {
-            if (!Prison.getInstance().getDatabase().getBlockTopNineName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopNineName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopNineName())).getName();
+            if (!Prison.getInstance().blockTopUUIDS.get(8).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(8))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(8))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopNineName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(8))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("block_top_10")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getBlockTopTen());
+        if (params.equalsIgnoreCase("block_top_10")){
+            return String.valueOf(Prison.getInstance().blockTopValues.get(9));
         }
         if (params.equalsIgnoreCase("block_topName_10")) {
-            if (!Prison.getInstance().getDatabase().getBlockTopTenName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopTenName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopTenName())).getName();
+            if (!Prison.getInstance().blockTopUUIDS.get(9).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(9))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(9))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getBlockTopTenName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().blockTopUUIDS.get(9))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("lvl_top_1")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getLvlTopOne());
+
+        if (params.equalsIgnoreCase("lvl_top_1")){
+            return String.valueOf(Prison.getInstance().lvlTopValues.get(0));
         }
         if (params.equalsIgnoreCase("lvl_topName_1")) {
-            if (!Prison.getInstance().getDatabase().getLvlTopOneName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopOneName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopOneName())).getName();
+            if (!Prison.getInstance().lvlTopUUIDS.get(0).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(0))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(0))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopOneName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(0))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("lvl_top_2")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getLvlTopTwo());
+        if (params.equalsIgnoreCase("lvl_top_2")){
+            return String.valueOf(Prison.getInstance().lvlTopValues.get(1));
         }
         if (params.equalsIgnoreCase("lvl_topName_2")) {
-            if (!Prison.getInstance().getDatabase().getLvlTopTwoName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopTwoName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopTwoName())).getName();
+            if (!Prison.getInstance().lvlTopUUIDS.get(1).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(1))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(1))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopTwoName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(1))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("lvl_top_3")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getLvlTopThree());
+        if (params.equalsIgnoreCase("lvl_top_3")){
+            return String.valueOf(Prison.getInstance().lvlTopValues.get(2));
         }
         if (params.equalsIgnoreCase("lvl_topName_3")) {
-            if (!Prison.getInstance().getDatabase().getLvlTopThreeName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopThreeName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopThreeName())).getName();
+            if (!Prison.getInstance().lvlTopUUIDS.get(2).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(2))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(2))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopThreeName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(2))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("lvl_top_4")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getLvlTopFour());
+        if (params.equalsIgnoreCase("lvl_top_4")){
+            return String.valueOf(Prison.getInstance().lvlTopValues.get(3));
         }
         if (params.equalsIgnoreCase("lvl_topName_4")) {
-            if (!Prison.getInstance().getDatabase().getLvlTopFourName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopFourName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopFourName())).getName();
+            if (!Prison.getInstance().lvlTopUUIDS.get(3).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(3))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(3))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopFourName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(3))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("lvl_top_5")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getLvlTopFive());
+        if (params.equalsIgnoreCase("lvl_top_5")){
+            return String.valueOf(Prison.getInstance().lvlTopValues.get(4));
         }
         if (params.equalsIgnoreCase("lvl_topName_5")) {
-            if (!Prison.getInstance().getDatabase().getLvlTopFiveName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopFiveName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopFiveName())).getName();
+            if (!Prison.getInstance().lvlTopUUIDS.get(4).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(4))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(4))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopFiveName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(4))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("lvl_top_6")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getLvlTopSix());
+        if (params.equalsIgnoreCase("lvl_top_6")){
+            return String.valueOf(Prison.getInstance().lvlTopValues.get(5));
         }
         if (params.equalsIgnoreCase("lvl_topName_6")) {
-            if (!Prison.getInstance().getDatabase().getLvlTopSixName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopSixName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopSixName())).getName();
+            if (!Prison.getInstance().lvlTopUUIDS.get(5).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(5))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(5))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopSixName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(5))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("lvl_top_7")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getLvlTopSeven());
+        if (params.equalsIgnoreCase("lvl_top_7")){
+            return String.valueOf(Prison.getInstance().lvlTopValues.get(6));
         }
         if (params.equalsIgnoreCase("lvl_topName_7")) {
-            if (!Prison.getInstance().getDatabase().getLvlTopSevenName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopSevenName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopSevenName())).getName();
+            if (!Prison.getInstance().lvlTopUUIDS.get(6).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(6))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(6))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopSevenName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(6))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("lvl_top_8")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getLvlTopEight());
+        if (params.equalsIgnoreCase("lvl_top_8")){
+            return String.valueOf(Prison.getInstance().lvlTopValues.get(7));
         }
         if (params.equalsIgnoreCase("lvl_topName_8")) {
-            if (!Prison.getInstance().getDatabase().getLvlTopEightName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopEightName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopEightName())).getName();
+            if (!Prison.getInstance().lvlTopUUIDS.get(7).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(7))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(7))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopEightName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(7))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("lvl_top_9")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getLvlTopNine());
+        if (params.equalsIgnoreCase("lvl_top_9")){
+            return String.valueOf(Prison.getInstance().lvlTopValues.get(8));
         }
         if (params.equalsIgnoreCase("lvl_topName_9")) {
-            if (!Prison.getInstance().getDatabase().getLvlTopNineName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopNineName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopNineName())).getName();
+            if (!Prison.getInstance().lvlTopUUIDS.get(8).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(8))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(8))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopNineName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(8))).getName();
                 }
             } else return "Место свободно..";
         }
-        if (params.equalsIgnoreCase("lvl_top_10")) {
-            return String.valueOf(Prison.getInstance().getDatabase().getLvlTopTen());
+        if (params.equalsIgnoreCase("lvl_top_10")){
+            return String.valueOf(Prison.getInstance().lvlTopValues.get(9));
         }
         if (params.equalsIgnoreCase("lvl_topName_10")) {
-            if (!Prison.getInstance().getDatabase().getLvlTopTenName().equals("")) {
-                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopTenName())) != null) {
-                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopTenName())).getName();
+            if (!Prison.getInstance().lvlTopUUIDS.get(9).equals("")) {
+                if (Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(9))) != null) {
+                    return Bukkit.getPlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(9))).getName();
                 } else {
-                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().getDatabase().getLvlTopTenName())).getName();
+                    return Bukkit.getOfflinePlayer(UUID.fromString(Prison.getInstance().lvlTopUUIDS.get(9))).getName();
                 }
             } else return "Место свободно..";
         }

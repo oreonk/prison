@@ -5,6 +5,7 @@ import com.oreonk.Prison;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -17,8 +18,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 public class ClickEvent implements Listener {
@@ -35,14 +38,12 @@ public class ClickEvent implements Listener {
             if (event.getView().getTitle().equalsIgnoreCase("Улучшение предмета")) {
                 event.setCancelled(true);
                 if (event.getCurrentItem().getType().equals(Material.GREEN_WOOL)) {
-                    if (player.getOpenInventory().getTopInventory().getItem(11).getType().toString().contains("DIAMOND") && player.getOpenInventory().getTopInventory().getItem(11).getEnchantments().containsValue(5)){
+                    if ((player.getOpenInventory().getTopInventory().getItem(11).getType().toString().contains("DIAMOND") && player.getOpenInventory().getTopInventory().getItem(11).getEnchantments().containsValue(5)) || (player.getOpenInventory().getTopInventory().getItem(11).getType().equals(Material.WOODEN_HOE) && player.getOpenInventory().getTopInventory().getItem(11).getEnchantments().containsValue(3))){
                         Msg.send(player, "Этот предмет уже максимально улучшен!");
                         player.closeInventory();
                     }
                     else {
                         FileConfiguration config = plugin.getConfig();
-                        String st = PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block:DIRT,STONE,OBSIDIAN,GRANITE,DIORITE,ANDESITE,GOLD_BLOCK,IRON_BLOCK,DIAMOND_BLOCK,COAL_BLOCK,GRAVEL,SAND,NETHERRACK,OAK_LEAVES,BIRCH_LEAVES,SPRUCE_LEAVES,JUNGLE_LEAVES,DARK_OAK_LEAVES,OAK_WOOD,BIRCH_LOG,SPRUCE_LOG,JUNGLE_LOG,DARK_OAK_WOOD,STRIPPED_JUNGLE_WOOD,STRIPPED_OAK_WOOD,STRIPPED_DARK_OAK_WOOD,STRIPPED_SPRUCE_WOOD,GOLD_ORE,IRON_ORE,COAL_ORE,DIAMOND_ORE,REDSTONE_ORE,EMERALD_ORE,NETHER_QUARTZ_ORE,LAPIS_ORE,WHITE_CONCRETE,ORANGE_CONCRETE,MAGENTA_CONCRETE,LIGHT_BLUE_CONCRETE,YELLOW_CONCRETE,LIME_CONCRETE,PINK_CONCRETE,GRAY_CONCRETE,LIGHT_GRAY_CONCRETE,CYAN_CONCRETE,PURPLE_CONCRETE,BLUE_CONCRETE,BROWN_CONCRETE,GREEN_CONCRETE,RED_CONCRETE,BLACK_CONCRETE,PURPUR_BLOCK,PURPUR_PILLAR,END_STONE,END_STONE_BRICKS,NETHER_BRICKS,RED_NETHER_BRICKS,NETHER_WART_BLOCK,STONE_BRICKS,MOSSY_STONE_BRICKS,CRACKED_STONE_BRICKS,CHISELED_STONE_BRICKS,BRICKS,SANDSTONE,CHISELED_SANDSTONE,CUT_SANDSTONE,RED_SANDSTONE,CYAN_GLAZED_TERRACOTTA,PRISMARINE,PRISMARINE_BRICKS,DARK_PRISMARINE,SEA_LANTERN,WHITE_WOOL,ORANGE_WOOL,GRAY_WOOL,COBWEB,ICE,BLUE_ICE,PACKED_ICE,PINK_GLAZED_TERRACOTTA,RED_GLAZED_TERRACOTTA,GRAY_GLAZED_TERRACOTTA,SNOW_BLOCK,DEEPSLATE_BRICKS,POLISHED_BLACKSTONE_BRICKS,CRACKED_DEEPSLATE_BRICKS,BASALT,DEEPSLATE,COBBLED_DEEPSLATE,GLIDED_BLACKSTONE,CRYING_OBSIDIAN%");
-                        int blocks = Integer.parseInt(st);
                         int count = config.getConfigurationSection("Upgrade").getKeys(false).size();
                         Set<String> key = config.getConfigurationSection("Upgrade").getKeys(false);
                         ArrayList<String> keys = new ArrayList<>(key);
@@ -79,15 +80,19 @@ public class ClickEvent implements Listener {
                                         if (metaSecond.getEnchantLevel(Enchantment.DIG_SPEED) == Integer.parseInt(number) || meta.getEnchantLevel(Enchantment.DIG_SPEED) == d-1){
                                             int cycle = 0;
                                             int balance = (int) economy.getBalance(player);
-                                            int block = Integer.parseInt(configs.get(0));
-                                            int money = Integer.parseInt(configs.get(1));
+                                            int money = Integer.parseInt(configs.get(0));
                                             int cfgLength = configs.size();
-                                            for (int configBlocks = 2; configBlocks < cfgLength; configBlocks = configBlocks + 3) {
+                                            for (int configBlocks = 1; configBlocks < cfgLength; configBlocks = configBlocks + 3) {
                                                 String configName = configs.get(configBlocks);
-                                                String placeholderName = "%statistic_mine_block:" + configName + "%";
+                                                String placeholderName = null;
+                                                if (!PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block:" + configName + "%").contains("Invalid")) {
+                                                    placeholderName = "%statistic_mine_block:" + configName + "%";
+                                                } else {
+                                                    placeholderName = "%statistic_kill_entity:" + configName + "%";
+                                                }
                                                 int blockToCheck = Integer.parseInt(configs.get(configBlocks + 1));
                                                 int placeholder = Integer.parseInt(PlaceholderAPI.setPlaceholders(player, placeholderName));
-                                                if (blocks >= block & balance >= money & placeholder >= blockToCheck) {
+                                                if (balance >= money & placeholder >= blockToCheck) {
                                                     cycle++;
                                                 } else {
                                                     Msg.send(player, "Вы не выполнили все условия!");
@@ -98,6 +103,21 @@ public class ClickEvent implements Listener {
                                                     economy.withdrawPlayer(player, money);
                                                     player.getInventory().getItemInMainHand().setAmount(0);
                                                     player.getInventory().addItem(item);
+                                                    //Ачивка на ап железной кирки эфф 3
+                                                    if (!Prison.getInstance().UPGRADE_ONE.contains(player.getUniqueId().toString())) {
+                                                        if (item.hasItemMeta() && item.getItemMeta().hasEnchant(Enchantment.DIG_SPEED) && item.getItemMeta().getEnchantLevel(Enchantment.DIG_SPEED) == 3 && item.getType().equals(Material.IRON_SHOVEL)) {
+                                                            Msg.send(player, ChatColor.GREEN + "Вы получили достижение " + ChatColor.GOLD + "Вот это агрегат! " + ChatColor.GREEN + "проверьте его в /achievements");
+                                                            List<String> list = Prison.getInstance().getAchievementsConfig().getStringList("UPGRADE_ONE");
+                                                            list.add(player.getUniqueId().toString());
+                                                            try {
+                                                                Prison.getInstance().getAchievementsConfig().set("UPGRADE_ONE", list);
+                                                                Prison.getInstance().getAchievementsConfig().save(Prison.getInstance().getAchievementsConfigFile());
+                                                                Prison.getInstance().UPGRADE_ONE.add(player.getUniqueId().toString());
+                                                            } catch (IOException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                        }
+                                                    }
                                                     player.closeInventory();
                                                     Msg.send(player, "&6" + money + " &f &7было снято с вашего счёта.");
                                                 }
@@ -151,7 +171,7 @@ public class ClickEvent implements Listener {
                         ArrayList<String> configs = (ArrayList<String>) Prison.getPlugin(Prison.class).getLvlConfig().getConfigurationSection("Lvl").getStringList(String.valueOf(lvl + 1));
                         Economy economy = Prison.getEconomy();
                         int balance = (int) economy.getBalance(player);
-                        String st = PlaceholderAPI.setPlaceholders(player, "%statistic_mine_block:DIRT,STONE,OBSIDIAN,GRANITE,DIORITE,ANDESITE,GOLD_BLOCK,IRON_BLOCK,DIAMOND_BLOCK,COAL_BLOCK,GRAVEL,SAND,NETHERRACK,OAK_LEAVES,BIRCH_LEAVES,SPRUCE_LEAVES,JUNGLE_LEAVES,DARK_OAK_LEAVES,OAK_WOOD,BIRCH_LOG,SPRUCE_LOG,JUNGLE_LOG,DARK_OAK_WOOD,STRIPPED_JUNGLE_WOOD,STRIPPED_OAK_WOOD,STRIPPED_DARK_OAK_WOOD,STRIPPED_SPRUCE_WOOD,GOLD_ORE,IRON_ORE,COAL_ORE,DIAMOND_ORE,REDSTONE_ORE,EMERALD_ORE,NETHER_QUARTZ_ORE,LAPIS_ORE,WHITE_CONCRETE,ORANGE_CONCRETE,MAGENTA_CONCRETE,LIGHT_BLUE_CONCRETE,YELLOW_CONCRETE,LIME_CONCRETE,PINK_CONCRETE,GRAY_CONCRETE,LIGHT_GRAY_CONCRETE,CYAN_CONCRETE,PURPLE_CONCRETE,BLUE_CONCRETE,BROWN_CONCRETE,GREEN_CONCRETE,RED_CONCRETE,BLACK_CONCRETE,PURPUR_BLOCK,PURPUR_PILLAR,END_STONE,END_STONE_BRICKS,NETHER_BRICKS,RED_NETHER_BRICKS,NETHER_WART_BLOCK,STONE_BRICKS,MOSSY_STONE_BRICKS,CRACKED_STONE_BRICKS,CHISELED_STONE_BRICKS,BRICKS,SANDSTONE,CHISELED_SANDSTONE,CUT_SANDSTONE,RED_SANDSTONE,CYAN_GLAZED_TERRACOTTA,PRISMARINE,PRISMARINE_BRICKS,DARK_PRISMARINE,SEA_LANTERN,WHITE_WOOL,ORANGE_WOOL,GRAY_WOOL,COBWEB,ICE,BLUE_ICE,PACKED_ICE,PINK_GLAZED_TERRACOTTA,RED_GLAZED_TERRACOTTA,GRAY_GLAZED_TERRACOTTA,SNOW_BLOCK,DEEPSLATE_BRICKS,POLISHED_BLACKSTONE_BRICKS,CRACKED_DEEPSLATE_BRICKS,BASALT,DEEPSLATE,COBBLED_DEEPSLATE,GLIDED_BLACKSTONE,CRYING_OBSIDIAN%");
+                        String st = String.valueOf(Prison.getInstance().getMinedBlocks(player));
                         if (balance >= Integer.parseInt(configs.get(1)) & Integer.parseInt(st) >= Integer.parseInt(configs.get(0))) {
                             lvl = lvl + 1;
                             economy.withdrawPlayer(player, Integer.parseInt(configs.get(1)));
@@ -185,7 +205,7 @@ public class ClickEvent implements Listener {
         String name = event.getCursor().getType().toString();
         if (event.getCurrentItem()!=null){
             if (event.getAction() == InventoryAction.HOTBAR_SWAP||event.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD|| event.isShiftClick()) {
-                if (event.getView().getTitle().equalsIgnoreCase("Зачарование") || event.getView().getTitle().equalsIgnoreCase("Повышение уровня") || event.getView().getTitle().equalsIgnoreCase("Улучшение предмета") || event.getView().getTitle().equalsIgnoreCase("Подтверждение зачарования") || event.getView().getTitle().contains("") || event.getView().getTitle().equalsIgnoreCase("Покупка приватного бустера") || event.getView().getTitle().equalsIgnoreCase("Глобальные бустеры") || event.getView().getTitle().equalsIgnoreCase("Покупка автоселла") || event.getView().getTitle().equalsIgnoreCase("Выбор фракции") || event.getView().getTitle().equalsIgnoreCase("Выбор белых")|| event.getView().getTitle().equalsIgnoreCase("Выбор черных")|| event.getView().getTitle().equalsIgnoreCase("Выбор азиатов") || event.getView().getTitle().equalsIgnoreCase("Зачарование")) {
+                if (event.getView().getTitle().equalsIgnoreCase("Зачарование") || event.getView().getTitle().equalsIgnoreCase("Повышение уровня") || event.getView().getTitle().equalsIgnoreCase("Улучшение предмета") || event.getView().getTitle().equalsIgnoreCase("Подтверждение зачарования") || event.getView().getTitle().contains("") || event.getView().getTitle().equalsIgnoreCase("Покупка приватного бустера") || event.getView().getTitle().equalsIgnoreCase("Глобальные бустеры") || event.getView().getTitle().equalsIgnoreCase("Покупка автоселла") || event.getView().getTitle().equalsIgnoreCase("Выбор фракции") || event.getView().getTitle().equalsIgnoreCase("Выбор белых")|| event.getView().getTitle().equalsIgnoreCase("Выбор черных")|| event.getView().getTitle().equalsIgnoreCase("Выбор азиатов") || event.getView().getTitle().equalsIgnoreCase("Зачарование") || event.getView().getTitle().equalsIgnoreCase("Коллекции") || event.getView().getTitle().equalsIgnoreCase("Достижения") || event.getView().getTitle().contains("камеры") || event.getView().getTitle().equalsIgnoreCase("Основное меню") || event.getView().getTitle().equalsIgnoreCase("Информация об игроке") || event.getView().getTitle().equalsIgnoreCase("Священник")) {
                     event.setCancelled(true);
                 }
             }

@@ -1,6 +1,7 @@
 package com.oreonk.events;
 
 import com.oreonk.Msg;
+import com.oreonk.Prison;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Random;
+import java.util.UUID;
 
 public class UniqueDrops implements Listener {
     @EventHandler
@@ -58,169 +60,183 @@ public class UniqueDrops implements Listener {
     private void dropMushroom(Player player){
         ItemStack mush = new ItemStack(Material.BROWN_MUSHROOM);
         ItemMeta mush_meta = mush.getItemMeta();
-        mush_meta.setDisplayName("&6Гриб");
+        mush_meta.setDisplayName(ChatColor.GOLD + "Гриб");
         mush.setItemMeta(mush_meta);
         if (player.getCanPickupItems()) {
             player.getInventory().addItem(mush);
         } else {
             Bukkit.getWorld(player.getUniqueId()).dropItemNaturally(player.getLocation(), mush);
         }
+        addItemCounter(player.getUniqueId());
         Msg.send(player, ChatColor.GREEN + "Вы нашли коллекционный гриб!");
     }
     private void dropQuartz(Player player){
         ItemStack mush = new ItemStack(Material.GHAST_TEAR);
         ItemMeta mush_meta = mush.getItemMeta();
-        mush_meta.setDisplayName("&9Кусок кварца");
+        mush_meta.setDisplayName(ChatColor.BLUE + "Кусок кварца");
         mush.setItemMeta(mush_meta);
         if (player.getCanPickupItems()) {
             player.getInventory().addItem(mush);
         } else {
             Bukkit.getWorld(player.getUniqueId()).dropItemNaturally(player.getLocation(), mush);
         }
+        addItemCounter(player.getUniqueId());
         Msg.send(player, ChatColor.GREEN + "Вы нашли коллекционный кварц!");
     }
     private void dropDust(Player player){
         ItemStack mush = new ItemStack(Material.GUNPOWDER);
         ItemMeta mush_meta = mush.getItemMeta();
-        mush_meta.setDisplayName("&7Каменная пыль");
+        mush_meta.setDisplayName(ChatColor.GRAY + "Каменная пыль");
         mush.setItemMeta(mush_meta);
         if (player.getCanPickupItems()) {
             player.getInventory().addItem(mush);
         } else {
             Bukkit.getWorld(player.getUniqueId()).dropItemNaturally(player.getLocation(), mush);
         }
+        addItemCounter(player.getUniqueId());
         Msg.send(player, ChatColor.GREEN + "Вы нашли коллекционную каменную пыль!");
     }
     private void dropSawdust(Player player){
         ItemStack mush = new ItemStack(Material.PUMPKIN_SEEDS);
         ItemMeta mush_meta = mush.getItemMeta();
-        mush_meta.setDisplayName("&eДубовые опилки");
+        mush_meta.setDisplayName(ChatColor.YELLOW + "Дубовые опилки");
         mush.setItemMeta(mush_meta);
         if (player.getCanPickupItems()) {
             player.getInventory().addItem(mush);
         } else {
             Bukkit.getWorld(player.getUniqueId()).dropItemNaturally(player.getLocation(), mush);
         }
+        addItemCounter(player.getUniqueId());
         Msg.send(player, ChatColor.GREEN + "Вы нашли коллекционные опилки!");
     }
     private void dropCoal(Player player){
         ItemStack mush = new ItemStack(Material.COAL);
         ItemMeta mush_meta = mush.getItemMeta();
-        mush_meta.setDisplayName("&8Карбонат");
+        mush_meta.setDisplayName(ChatColor.DARK_GRAY + "Карбонат");
         mush.setItemMeta(mush_meta);
         if (player.getCanPickupItems()) {
             player.getInventory().addItem(mush);
         } else {
             Bukkit.getWorld(player.getUniqueId()).dropItemNaturally(player.getLocation(), mush);
         }
+        addItemCounter(player.getUniqueId());
         Msg.send(player, ChatColor.GREEN + "Вы нашли коллекционный карбонат!");
     }
     private void dropBarley(Player player){
         ItemStack mush = new ItemStack(Material.WHEAT);
         ItemMeta mush_meta = mush.getItemMeta();
-        mush_meta.setDisplayName("&8Ячмень");
+        mush_meta.setDisplayName(ChatColor.DARK_GRAY + "Ячмень");
         mush.setItemMeta(mush_meta);
         if (player.getCanPickupItems()) {
             player.getInventory().addItem(mush);
         } else {
             Bukkit.getWorld(player.getUniqueId()).dropItemNaturally(player.getLocation(), mush);
         }
+        addItemCounter(player.getUniqueId());
         Msg.send(player, ChatColor.GREEN + "Вы нашли коллекционный ячмень!");
     }
     private void dropStalactite(Player player){
         ItemStack mush = new ItemStack(Material.IRON_NUGGET);
         ItemMeta mush_meta = mush.getItemMeta();
-        mush_meta.setDisplayName("&dСталактит");
+        mush_meta.setDisplayName(ChatColor.LIGHT_PURPLE + "Сталактит");
         mush.setItemMeta(mush_meta);
         if (player.getCanPickupItems()) {
             player.getInventory().addItem(mush);
         } else {
             Bukkit.getWorld(player.getUniqueId()).dropItemNaturally(player.getLocation(), mush);
         }
+        addItemCounter(player.getUniqueId());
         Msg.send(player, ChatColor.GREEN + "Вы нашли коллекционный сталактит!");
     }
     private void dropMush(Player player){
         ItemStack mush = new ItemStack(Material.GREEN_DYE);
         ItemMeta mush_meta = mush.getItemMeta();
-        mush_meta.setDisplayName("&aМох");
+        mush_meta.setDisplayName(ChatColor.GREEN + "Мох");
         mush.setItemMeta(mush_meta);
         if (player.getCanPickupItems()) {
             player.getInventory().addItem(mush);
         } else {
             Bukkit.getWorld(player.getUniqueId()).dropItemNaturally(player.getLocation(), mush);
         }
+        addItemCounter(player.getUniqueId());
         Msg.send(player, ChatColor.GREEN + "Вы нашли коллекционный мох!");
     }
     private void dropBedrock(Player player){
         ItemStack mush = new ItemStack(Material.BRICK);
         ItemMeta mush_meta = mush.getItemMeta();
-        mush_meta.setDisplayName("&cЗатвердевшая порода");
+        mush_meta.setDisplayName(ChatColor.RED + "Затвердевшая порода");
         mush.setItemMeta(mush_meta);
         if (player.getCanPickupItems()) {
             player.getInventory().addItem(mush);
         } else {
             Bukkit.getWorld(player.getUniqueId()).dropItemNaturally(player.getLocation(), mush);
         }
+        addItemCounter(player.getUniqueId());
         Msg.send(player, ChatColor.GREEN + "Вы нашли коллекционную затвердевшую породу!");
     }
     private void dropDiamondDust(Player player){
         ItemStack mush = new ItemStack(Material.CYAN_DYE);
         ItemMeta mush_meta = mush.getItemMeta();
-        mush_meta.setDisplayName("&bАлмазная крошка");
+        mush_meta.setDisplayName(ChatColor.AQUA + "Алмазная крошка");
         mush.setItemMeta(mush_meta);
         if (player.getCanPickupItems()) {
             player.getInventory().addItem(mush);
         } else {
             Bukkit.getWorld(player.getUniqueId()).dropItemNaturally(player.getLocation(), mush);
         }
+        addItemCounter(player.getUniqueId());
         Msg.send(player, ChatColor.GREEN + "Вы нашли коллекционную алмазную крошку!");
     }
     private void dropStick(Player player){
         ItemStack mush = new ItemStack(Material.ACACIA_SAPLING);
         ItemMeta mush_meta = mush.getItemMeta();
-        mush_meta.setDisplayName("&eВеточка");
+        mush_meta.setDisplayName(ChatColor.YELLOW + "Веточка");
         mush.setItemMeta(mush_meta);
         if (player.getCanPickupItems()) {
             player.getInventory().addItem(mush);
         } else {
             Bukkit.getWorld(player.getUniqueId()).dropItemNaturally(player.getLocation(), mush);
         }
+        addItemCounter(player.getUniqueId());
         Msg.send(player, ChatColor.GREEN + "Вы нашли коллекционную ветку!");
     }
     private void dropSoul(Player player){
         ItemStack mush = new ItemStack(Material.FIRE_CHARGE);
         ItemMeta mush_meta = mush.getItemMeta();
-        mush_meta.setDisplayName("&4Душа грешника");
+        mush_meta.setDisplayName(ChatColor.DARK_RED + "Душа грешника");
         mush.setItemMeta(mush_meta);
         if (player.getCanPickupItems()) {
             player.getInventory().addItem(mush);
         } else {
             Bukkit.getWorld(player.getUniqueId()).dropItemNaturally(player.getLocation(), mush);
         }
+        addItemCounter(player.getUniqueId());
         Msg.send(player, ChatColor.GREEN + "Вы нашли душу грешника!");
     }
     private void dropEye(Player player){
         ItemStack mush = new ItemStack(Material.ENDER_EYE);
         ItemMeta mush_meta = mush.getItemMeta();
-        mush_meta.setDisplayName("&dВсевидящее око");
+        mush_meta.setDisplayName(ChatColor.LIGHT_PURPLE + "Всевидящее око");
         mush.setItemMeta(mush_meta);
         if (player.getCanPickupItems()) {
             player.getInventory().addItem(mush);
         } else {
             Bukkit.getWorld(player.getUniqueId()).dropItemNaturally(player.getLocation(), mush);
         }
+        addItemCounter(player.getUniqueId());
         Msg.send(player, ChatColor.GREEN + "Вы нашли всевидящее око!");
     }
     private void dropTungsten(Player player){
         ItemStack mush = new ItemStack(Material.SHULKER_SHELL);
         ItemMeta mush_meta = mush.getItemMeta();
-        mush_meta.setDisplayName("&5Осколок вольфрама");
+        mush_meta.setDisplayName(ChatColor.DARK_PURPLE + "Осколок вольфрама");
         mush.setItemMeta(mush_meta);
         if (player.getCanPickupItems()) {
             player.getInventory().addItem(mush);
         } else {
             Bukkit.getWorld(player.getUniqueId()).dropItemNaturally(player.getLocation(), mush);
         }
+        addItemCounter(player.getUniqueId());
         Msg.send(player, ChatColor.GREEN + "Вы нашли коллекционный вольфрам!");
     }
     private void bossDropMiner(Entity entity){
@@ -230,39 +246,20 @@ public class UniqueDrops implements Listener {
         itemMeta.setDisplayName(ChatColor.RED + "Сердце");
         Bukkit.getWorld("world").dropItemNaturally(location, item);
     }
-    private void bossDropFarmer(Entity entity){
-        Location location = entity.getLocation();
-        ItemStack item = new ItemStack(Material.STONE_HOE);
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.YELLOW + "Тяпка");
-        Bukkit.getWorld("world").dropItemNaturally(location, item);
-    }
-    private void bossDropWitch(Entity entity){
-        Location location = entity.getLocation();
-        ItemStack item = new ItemStack(Material.SPLASH_POTION);
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.DARK_PURPLE + "Эликсир");
-        Bukkit.getWorld("world").dropItemNaturally(location, item);
-    }
-    private void bossDropForest(Entity entity){
-        Location location = entity.getLocation();
-        ItemStack item = new ItemStack(Material.GLOWSTONE_DUST);
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.DARK_RED + "Ра");
-        Bukkit.getWorld("world").dropItemNaturally(location, item);
-    }
-    private void bossDropSatan(Entity entity){
-        Location location = entity.getLocation();
-        ItemStack item = new ItemStack(Material.PHANTOM_MEMBRANE);
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.AQUA + "Душа");
-        Bukkit.getWorld("world").dropItemNaturally(location, item);
-    }
     //Отмена ПКМ
     @EventHandler
     public void interactionCancel(PlayerInteractEvent event){
-        if ((event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Веточка") || event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName().contains("Веточка") || event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Всевидящее око") || event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName().contains("Всевидящее око") || event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Сердце") || event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName().contains("Сердце") || event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Тяпка") || event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName().contains("Тяпка") || event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Эликсир") || event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName().contains("Эликсир")) && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR))){
-            event.setCancelled(true);
+        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+            if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null) {
+                if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Веточка") || event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Всевидящее око") || event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Сердце") || event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Тяпка") || event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("Эликсир")) {
+                    event.setCancelled(true);
+                }
+            }
+            if (event.getPlayer().getInventory().getItemInOffHand().getItemMeta() != null) {
+                if (event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName().contains("Веточка") || event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName().contains("Всевидящее око") || event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName().contains("Сердце") || event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName().contains("Тяпка") || event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName().contains("Эликсир")) {
+                    event.setCancelled(true);
+                }
+            }
         }
     }
     @EventHandler
@@ -273,30 +270,14 @@ public class UniqueDrops implements Listener {
             if (percent < 90) {
                 bossDropMiner(event.getEntity());
             }
-        } else if (event.getEntity().getCustomName() != null && event.getEntity().getCustomName().contains("фермер")) {
-            Random r = new Random();
-            int percent = r.nextInt(100);
-            if (percent < 90) {
-                bossDropFarmer(event.getEntity());
-            }
-        } else if (event.getEntity().getCustomName() != null && event.getEntity().getCustomName().contains("Ведьма")) {
-            Random r = new Random();
-            int percent = r.nextInt(100);
-            if (percent < 70) {
-                bossDropWitch(event.getEntity());
-            }
-        } else if (event.getEntity().getCustomName() != null && event.getEntity().getCustomName().contains("Хранитель леса")) {
-            Random r = new Random();
-            int percent = r.nextInt(100);
-            if (percent < 70) {
-                bossDropForest(event.getEntity());
-            }
-        } else if (event.getEntity().getCustomName() != null && event.getEntity().getCustomName().contains("сатаны")) {
-            Random r = new Random();
-            int percent = r.nextInt(100);
-            if (percent < 50) {
-                bossDropSatan(event.getEntity());
-            }
+        }
+    }
+    private void addItemCounter(UUID uuid){
+        if (Prison.getInstance().collection_counter.containsKey(uuid)){
+            int amount = Prison.getInstance().collection_counter.get(uuid);
+            Prison.getInstance().collection_counter.replace(uuid, amount+1);
+        } else {
+            Prison.getInstance().collection_counter.put(uuid, 1);
         }
     }
 }

@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.UUID;
 
@@ -35,32 +36,110 @@ public class DBJoin implements Listener {
             multiplier = "1.05";
         }
         double plusMultiplier = Double.parseDouble(multiplier);
-        String finalMultiplier ;
+        String finalMultiplier1 ;
         // Множитель от стата интеллекта
         int intellect = Prison.getInstance().getDatabase().getIntellectStat(player);
-        if (intellect >= 20 && intellect < 40) {
-            finalMultiplier = String.valueOf(plusMultiplier + 0.1);
-        } else if (intellect >= 40 && intellect < 60){
-            finalMultiplier = String.valueOf(plusMultiplier + 0.15);
-        } else if (intellect >= 60 && intellect < 80){
-            finalMultiplier = String.valueOf(plusMultiplier + 0.2);
-        } else if (intellect >= 80 && intellect < 100){
-            finalMultiplier = String.valueOf(plusMultiplier + 0.25);
-        } else if (intellect >= 100){
-            finalMultiplier = String.valueOf(plusMultiplier + 0.3);
+        if (!Prison.getInstance().intellect.containsKey(player)) {
+            Prison.getInstance().intellect.put(player, intellect);
         } else {
-            finalMultiplier = multiplier;
+            Prison.getInstance().intellect.replace(player, intellect);
         }
+        if (intellect >= 20 && intellect < 40) {
+            finalMultiplier1 = String.valueOf(plusMultiplier + 0.1);
+        } else if (intellect >= 40 && intellect < 60){
+            finalMultiplier1 = String.valueOf(plusMultiplier + 0.15);
+        } else if (intellect >= 60 && intellect < 80){
+            finalMultiplier1 = String.valueOf(plusMultiplier + 0.2);
+        } else if (intellect >= 80 && intellect < 100){
+            finalMultiplier1 = String.valueOf(plusMultiplier + 0.25);
+        } else if (intellect >= 100){
+            finalMultiplier1 = String.valueOf(plusMultiplier + 0.3);
+        } else {
+            finalMultiplier1 = multiplier;
+        }
+        double db = Double.parseDouble(finalMultiplier1);
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        String finalMultiplier = decimalFormat.format(db).replace("," , ".");
         Bukkit.getScheduler().runTaskAsynchronously(Prison.getInstance(), () -> {
             Prison.getPlugin(Prison.class).getDatabase().createPlayer(player, finalMultiplier);
             Prison.getPlugin(Prison.class).getDatabase().updateMultiplier(player.getUniqueId(), finalMultiplier);
-            Prison.getPlugin(Prison.class).lvl.put(player, Prison.getPlugin(Prison.class).getDatabase().getLVL(player));
+            if (!Prison.getInstance().lvl.containsKey(player)) {
+                Prison.getPlugin(Prison.class).lvl.put(player, Prison.getPlugin(Prison.class).getDatabase().getLVL(player));
+            }
             Integer religion = Prison.getInstance().getDatabase().getReligionStat(player);
-            Prison.getInstance().religion.put(player, religion);
-            Prison.getPlugin(Prison.class).bst.put(player, Prison.getPlugin(Prison.class).getDatabase().getBoost(player));
-            Prison.getPlugin(Prison.class).faction.put(player, Prison.getPlugin(Prison.class).getDatabase().getFaction(player));
+            if (!Prison.getInstance().religion.containsKey(player)){
+                Prison.getInstance().religion.put(player, religion);
+            }
+            if (!Prison.getInstance().bst.containsKey(player)) {
+                Prison.getPlugin(Prison.class).bst.put(player, Prison.getPlugin(Prison.class).getDatabase().getBoost(player));
+            }
+            if (!Prison.getInstance().faction.containsKey(player)) {
+                Prison.getPlugin(Prison.class).faction.put(player, Prison.getPlugin(Prison.class).getDatabase().getFaction(player));
+            }
+            if (!Prison.getInstance().privateBlockBooster.containsKey(player.getUniqueId())) {
+                if (Prison.getInstance().getDatabase().getLocalBlockBoosterTime(player.getUniqueId()) > 0) {
+                    Prison.getInstance().privateBlockBooster.put(player.getUniqueId(), Prison.getInstance().getDatabase().getLocalBlockBoosterTime(player.getUniqueId()));
+                    Prison.getInstance().privateBlockBoosterMultiplier.put(player.getUniqueId(), Prison.getInstance().getDatabase().getLocalBlockBoosterMultiplier(player.getUniqueId()));
+                }
+            }
+            if (!Prison.getInstance().privateMobBooster.containsKey(player.getUniqueId())) {
+                if (Prison.getInstance().getDatabase().getLocalMobBoosterTime(player.getUniqueId()) > 0) {
+                    Prison.getInstance().privateMobBooster.put(player.getUniqueId(), Prison.getInstance().getDatabase().getLocalMobBoosterTime(player.getUniqueId()));
+                    Prison.getInstance().privateMobMultiplier.put(player.getUniqueId(), Prison.getInstance().getDatabase().getLocalMobBoosterMultiplier(player.getUniqueId()));
+                }
+            }
+            if (!Prison.getInstance().privateBooster.containsKey(player.getUniqueId())) {
+                if (Prison.getInstance().getDatabase().getLocalMoneyBoosterTime(player.getUniqueId()) > 0) {
+                    Prison.getInstance().privateBooster.put(player.getUniqueId(), Prison.getInstance().getDatabase().getLocalMoneyBoosterTime(player.getUniqueId()));
+                    Prison.getInstance().privateBoosterMultiplier.put(player.getUniqueId(), Prison.getInstance().getDatabase().getLocalMoneyBoosterMultiplier(player.getUniqueId()));
+                }
+            }
+            if (!Prison.getInstance().authorityStat.containsKey(player)){
+                Prison.getInstance().authorityStat.put(player, Double.valueOf(Prison.getInstance().getDatabase().getAuthorityStat(player)));
+            }
         });
-        Prison.getPlugin(Prison.class).mltp.put(player, Double.parseDouble(finalMultiplier));
+        if (!Prison.getInstance().mltp.containsKey(player)) {
+            Prison.getPlugin(Prison.class).mltp.put(player, Double.parseDouble(finalMultiplier));
+        }
+        if (!Prison.getInstance().plusMultiplier.containsKey(player)) {
+            Prison.getInstance().plusMultiplier.put(player, Prison.getInstance().getDatabase().getPlusMultiplier(player.getUniqueId()));
+        }
+        //СтатХуд
+        //double globalBoost = 0;
+        //if (!Prison.getPlugin(Prison.class).booster.isEmpty()){
+        //    globalBoost = 1.0;
+        //}
+        //int privateBoost = 0;
+        //if (Prison.getInstance().privateBooster.containsKey(player.getUniqueId())) {
+        //    privateBoost = 1;
+        //}
+        //Double boost = Prison.getInstance().getDatabase().getBoost(player);
+        //double finalMultiplier2 = Double.parseDouble(finalMultiplier)+boost+globalBoost+privateBoost;
+        //BossBar statHud = Bukkit.createBossBar("                                                                                                                                   Множитель " + finalMultiplier2 + " Ещё один множитель: " +finalMultiplier2 + " Ещё один множитель: " +finalMultiplier2, BarColor.WHITE, BarStyle.SOLID);
+        //statHud.setVisible(true);
+        //statHud.addPlayer(player);
+        //new BukkitRunnable() {
+        //        public void run() {
+        //            if (statHud.getPlayers().contains(player)){
+        //                double globalBoost = 0;
+        //                if (!Prison.getPlugin(Prison.class).booster.isEmpty()){
+        //                    globalBoost = 1.0;
+        //                }
+        //                int privateBoost = 0;
+        //                if (Prison.getInstance().privateBooster.containsKey(player.getUniqueId())) {
+        //                    privateBoost = 1;
+        //                }
+        //                Double boost = 0.0;
+        //                if (Prison.getInstance().bst.containsKey(player)) {
+        //                boost = Prison.getPlugin(Prison.class).bst.get(player);
+        //                }
+        //                double finalMultiplier2 = Prison.getInstance().mltp.get(player)+boost+globalBoost+privateBoost;
+        //                statHud.setTitle("                                                                                                                                   Множитель " + finalMultiplier2 + " Ещё один множитель: " +finalMultiplier2 + " Ещё один множитель: " +finalMultiplier2);
+        //            } else {
+        //                statHud.addPlayer(player);
+        //            }
+        //        }
+        //}.runTaskTimer(Prison.getInstance(), 0, 1200);
         if (!Prison.getInstance().boosterBlocks.isEmpty()) {
             String playerName = null;
             int timer = 0;

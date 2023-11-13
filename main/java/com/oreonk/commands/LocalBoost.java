@@ -15,44 +15,62 @@ import java.util.UUID;
 public class LocalBoost implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] arguments) {
-        Player player = (Player) sender;
-        if (arguments.length != 2) {
+        //Если 1 после времени - множитель 1.5, если 2 - множитель 2
+        Player player = null;
+        if (sender instanceof Player) {
+            player = (Player) sender;
+        }
+        if (arguments.length != 3) {
             return false;
-        }else if (Bukkit.getPlayer(arguments[0]) != null){
-            if (NumberUtils.isNumber(arguments[1])) {
+        } else if (Bukkit.getPlayer(arguments[0]) != null){
+            if (NumberUtils.isNumber(arguments[1]) && NumberUtils.isNumber(arguments[2])) {
                 if (Bukkit.getPlayer(arguments[0]).isOnline()){
                     UUID uuid = Bukkit.getPlayer(arguments[0]).getUniqueId();
-                    if (!Prison.getInstance().privateBooster.containsKey(uuid)) {
-                    Prison.getInstance().privateBooster.put(uuid, Integer.parseInt(arguments[1]));
-                } else {
-                    Prison.getInstance().privateBooster.replace(uuid, Integer.parseInt(arguments[1]));
-                }
-                new BukkitRunnable() {
-                    public void run() {
-                        if (Prison.getInstance().privateBooster.get(uuid) != null) {
-                            int time = Prison.getInstance().privateBooster.get(uuid);
-                            time--;
-                            Prison.getInstance().privateBooster.replace(uuid, time);
-                            if (time == 0) {
-                                Prison.getInstance().privateBooster.remove(uuid);
-                                this.cancel();
+                    if (!Prison.getInstance().privateBooster.containsKey(uuid) && !Prison.getInstance().privateBoosterMultiplier.containsKey(uuid)) {
+                        if (Integer.parseInt(arguments[2])<1 || Integer.parseInt(arguments[2])>2){
+                            if(sender == null){
+                                Prison.getInstance().getLogger().info("Третий аргумент должен быть 1 или 2");
+                                return true;
+                            } else {
+                                Msg.send(player, "Третий аргумент должен быть 1 или 2");
+                                return true;
                             }
                         } else {
-                            this.cancel();
+                            Prison.getInstance().privateBooster.put(uuid, Integer.parseInt(arguments[1]));
+                            Prison.getInstance().privateBoosterMultiplier.put(uuid, Integer.parseInt(arguments[2]));
+                            return true;
                         }
-                    }
-                }.runTaskTimer(Prison.getInstance(), 1200, 1200);
-                    return true;
                 } else {
-                    Msg.send(player, "Игрок оффлайн!");
-                    return true;
+                        if (Integer.parseInt(arguments[2])<1 || Integer.parseInt(arguments[2])>2){
+                            if(sender == null){
+                                Prison.getInstance().getLogger().info("Третий аргумент должен быть 1 или 2");
+                                return true;
+                            } else {
+                                Msg.send(player, "Третий аргумент должен быть 1 или 2");
+                                return true;
+                            }
+                        } else {
+                            Prison.getInstance().privateBooster.replace(uuid, Integer.parseInt(arguments[1]));
+                            Prison.getInstance().privateBoosterMultiplier.replace(uuid, Integer.parseInt(arguments[2]));
+                            return true;
+                        }
+                }
+                } else {
+                    if (sender == null) {
+                        Msg.send(player, "Игрок оффлайн!");
+                        Prison.getInstance().getLogger().info("Игрок оффлайн!");
+                        return true;
+                    } else {
+                        Msg.send(player, "Игрок оффлайн!");
+                        return true;
+                    }
                 }
             } else {
                 if (sender != null) {
-                    Msg.send(player, "Второй аргумент должен быть числом!");
+                    Msg.send(player, "Второй и третий аргументы должен быть числом!");
                     return true;
                 } else {
-                    Prison.getInstance().getLogger().info("Второй аргумент должен быть числом!");
+                    Prison.getInstance().getLogger().info("Второй и третий аргументы должен быть числом!");
                     return true;
                 }
             }
@@ -61,7 +79,7 @@ public class LocalBoost implements CommandExecutor {
                 Msg.send(player, "Первым аргументом команды должен быть ник игрока!");
                 return true;
             } else {
-                Prison.getInstance().getLogger().info("Второй аргумент должен быть числом!");
+                Prison.getInstance().getLogger().info("Первым аргументом команды должен быть ник игрока!");
                 return true;
             }
         }

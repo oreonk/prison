@@ -14,6 +14,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.IOException;
+import java.util.List;
+
 public class FactionsMenu implements Listener {
     @EventHandler
     public void FactionsMenu (InventoryClickEvent event){
@@ -119,6 +122,21 @@ public class FactionsMenu implements Listener {
                 perms.playerAdd(player, "prison.white");
                 perms.playerAdd(player, "chatty.chat.factionwhite");
                 player.closeInventory();
+                //Ачивка фракции
+                if (!Prison.getInstance().FRACTION_ONE.contains(player.getUniqueId().toString())){
+                    if (Prison.getInstance().getDatabase().getOverallAchievementLvl(player) >= 3) {
+                        Msg.send(player, ChatColor.GREEN + "Вы получили достижение " + ChatColor.GOLD + "Да кто ты такой? " + ChatColor.GREEN + "проверьте его в /achievements");
+                        List<String> list = Prison.getInstance().getAchievementsConfig().getStringList("FRACTION_ONE");
+                        list.add(player.getUniqueId().toString());
+                        try {
+                            Prison.getInstance().getAchievementsConfig().set("FRACTION_ONE", list);
+                            Prison.getInstance().getAchievementsConfig().save(Prison.getInstance().getAchievementsConfigFile());
+                            Prison.getInstance().FRACTION_ONE.add(player.getUniqueId().toString());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             } else if (event.getView().getTitle().contains("Выбор черных") && event.getCurrentItem().getType().equals(Material.GREEN_WOOL)){
                 Prison.getInstance().getDatabase().setFaction(player, "black");
                 Prison.getInstance().faction.put(player, "black");
@@ -127,6 +145,21 @@ public class FactionsMenu implements Listener {
                 perms.playerAdd(player, "prison.black");
                 perms.playerAdd(player, "chatty.chat.factionblack");
                 player.closeInventory();
+                //Ачивка фракции
+                if (!Prison.getInstance().FRACTION_ONE.contains(player.getUniqueId().toString())){
+                    if (Prison.getInstance().getDatabase().getOverallAchievementLvl(player) >= 3) {
+                        Msg.send(player, ChatColor.GREEN + "Вы получили достижение " + ChatColor.GOLD + "Да кто ты такой? " + ChatColor.GREEN + "проверьте его в /achievements");
+                        List<String> list = Prison.getInstance().getAchievementsConfig().getStringList("FRACTION_ONE");
+                        list.add(player.getUniqueId().toString());
+                        try {
+                            Prison.getInstance().getAchievementsConfig().set("FRACTION_ONE", list);
+                            Prison.getInstance().getAchievementsConfig().save(Prison.getInstance().getAchievementsConfigFile());
+                            Prison.getInstance().FRACTION_ONE.add(player.getUniqueId().toString());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             } else if (event.getView().getTitle().contains("Выбор азиатов") && event.getCurrentItem().getType().equals(Material.GREEN_WOOL)){
                 Prison.getInstance().getDatabase().setFaction(player, "asian");
                 Prison.getInstance().faction.put(player, "asian");
@@ -135,6 +168,21 @@ public class FactionsMenu implements Listener {
                 perms.playerAdd(player, "prison.asian");
                 perms.playerAdd(player, "chatty.chat.factionasian");
                 player.closeInventory();
+                //Ачивка фракции
+                if (!Prison.getInstance().FRACTION_ONE.contains(player.getUniqueId().toString())){
+                    if (Prison.getInstance().getDatabase().getOverallAchievementLvl(player) >= 3) {
+                        Msg.send(player, ChatColor.GREEN + "Вы получили достижение " + ChatColor.GOLD + "Да кто ты такой? " + ChatColor.GREEN + "проверьте его в /achievements");
+                        List<String> list = Prison.getInstance().getAchievementsConfig().getStringList("FRACTION_ONE");
+                        list.add(player.getUniqueId().toString());
+                        try {
+                            Prison.getInstance().getAchievementsConfig().set("FRACTION_ONE", list);
+                            Prison.getInstance().getAchievementsConfig().save(Prison.getInstance().getAchievementsConfigFile());
+                            Prison.getInstance().FRACTION_ONE.add(player.getUniqueId().toString());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
         }
     }
